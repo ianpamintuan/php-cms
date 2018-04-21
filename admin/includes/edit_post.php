@@ -62,6 +62,10 @@
 
         if(!$result) {
             die("SQL Error" . mysqli_error($connection));
+        } else {
+            echo "<div class='alert alert-success alert-dismissible' role='alert'>
+            <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
+            Post updated successfully. <a href='posts.php'>Back to Posts</a></div>";
         }
     }
 
@@ -86,7 +90,15 @@
 
     <div class="form-group">
         <label for="post_status">Post Status</label>
-        <input type="text" class="form-control" name="post_status" value="<?php echo $post_status; ?>">
+        <select name="post_status" id="post_status" class="form-control">
+            <option value="<?php echo $post_status; ?>"><?php echo $post_status; ?></option>
+            <?php
+                if($post_status !== "Draft")
+                    echo "<option value='Draft'>Draft</option>";
+                else
+                    echo "<option value='Published'>Published</option>";
+            ?>
+        </select>
     </div>
     
     <div class="form-group">

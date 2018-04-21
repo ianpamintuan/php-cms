@@ -27,7 +27,9 @@
         if(!$result) {
             die("SQL error " . mysqli_error($connection));
         } else {
-            echo "Post added successfully!";
+            echo "<div class='alert alert-success alert-dismissible' role='alert'>
+            <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
+            Post added successfully. <a href='posts.php'>Back to Posts</a></div>";
         }
 
     }
@@ -53,7 +55,10 @@
 
     <div class="form-group">
         <label for="post_status">Post Status</label>
-        <input type="text" class="form-control" name="post_status">
+        <select name="post_status" id="post_status" class="form-control">
+            <option value="Draft">Draft</option>
+            <option value="Published">Published</option>
+        </select>
     </div>
     
     <div class="form-group">

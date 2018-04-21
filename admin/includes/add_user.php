@@ -21,7 +21,7 @@
         } else {
             echo "<div class='alert alert-success alert-dismissible' role='alert'>
             <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
-            User added successfully. <a href='users.php'>Back to Users</a></div> ";
+            User added successfully. <a href='users.php'>Back to Users</a></div>";
         }
 
     }

@@ -65,7 +65,7 @@
         } else {
             echo "<div class='alert alert-success alert-dismissible' role='alert'>
             <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
-            Post updated successfully. <a href='posts.php'>Back to Posts</a></div>";
+            Post updated successfully. <a href='../post.php?post_id={$post_id}'>View Post</a></div>";
         }
     }
 

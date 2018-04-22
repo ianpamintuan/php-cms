@@ -2,6 +2,8 @@
 
     <?php require_once('includes/nav.php'); ?>
 
+    <?php session_start(); ?>
+
     <!-- Page Content -->
     <div class="container">
 
@@ -26,6 +28,7 @@
                     
                         while($row = mysqli_fetch_assoc($result)) {
 
+                            $posts_info['post_id'] = $row['post_id'];
                             $posts_info['post_title'] = $row['post_title'];
                             $posts_info['post_author'] = $row['post_author'];
                             $posts_info['post_date'] = $row['post_date'];
@@ -36,7 +39,13 @@
 
                 <!--  Blog Post -->
                 <h1 class="page-header">
-                <?php echo $posts_info['post_title']; ?>
+                    <?php echo $posts_info['post_title']; ?>
+                    <?php
+                        if(isset($_SESSION['user_id'])) { ?>
+                            <a href="admin/posts.php?src=edit_post&edit=<?php echo $posts_info['post_id']; ?>" class="pull-right" style="font-size: 16px;">Edit post</a>
+                    <?php                            
+                        }
+                    ?>
                 </h1>
                 <p class="lead">
                     by <a href="index.php"><?php echo $posts_info['post_author']; ?></a>

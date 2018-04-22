@@ -1,6 +1,8 @@
 <?php require_once('includes/header.php'); ?>
-
+    
     <?php require_once('includes/nav.php'); ?>
+
+    <?php session_start(); ?>
 
     <!-- Page Content -->
     <div class="container">
@@ -43,6 +45,12 @@
                 <!--  Blog Post -->
                 <h2>
                     <a href="post.php?post_id=<?php echo $posts_info['post_id']; ?>"><?php echo $posts_info['post_title']; ?></a>
+                    <?php
+                        if(isset($_SESSION['user_id'])) { ?>
+                            <a href="admin/posts.php?src=edit_post&edit=<?php echo $posts_info['post_id']; ?>" class="pull-right" style="font-size: 16px;">Edit post</a>
+                    <?php                            
+                        }
+                    ?>
                 </h2>
                 <p class="lead">
                     by <a href="index.php"><?php echo $posts_info['post_author']; ?></a>

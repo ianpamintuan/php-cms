@@ -49,10 +49,12 @@
                 </p>
                 <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo $posts_info['post_date']; ?></p>
                 <hr>
-                <img class="img-responsive" src="images/<?php echo $posts_info['post_image']; ?>" alt="">
+                <a href="post.php?post_id=<?php echo $posts_info['post_id']; ?>">
+                    <img class="img-responsive" src="images/<?php echo $posts_info['post_image']; ?>" alt="Post image">
+                </a>
                 <hr>
                 <p><?php echo $posts_info['post_content'] . '...'; ?></p>
-                <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
+                <a class="btn btn-primary" href="post.php?post_id=<?php echo $posts_info['post_id']; ?>">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
 
                 <hr>
 

@@ -168,6 +168,7 @@
                 }
 
                 echo "<tr>";
+                echo "<td><input type='checkbox' name='checkboxArray[]' class='checkbox' value='{$post_id}'></td>";
                 echo "<td>{$post_id}</td>";
                 echo "<td>{$post_title}</td>";
                 echo "<td>{$post_content}</td>";

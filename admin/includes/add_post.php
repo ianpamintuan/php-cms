@@ -4,32 +4,34 @@
 
     if(isset($_POST['create_post'])) {
 
-         $post_title = $_POST['post_title'];
-         $post_author = $_POST['post_author'];
-         $post_content = $_POST['post_content'];
-         $category_id = $_POST['category_id'];
-         $post_status = $_POST['post_status'];
-         $post_tags = $_POST['post_tags'];
+        $post_title = $_POST['post_title'];
+        $post_author = $_POST['post_author'];
+        $post_content = $_POST['post_content'];
+        $category_id = $_POST['category_id'];
+        $post_status = $_POST['post_status'];
+        $post_tags = $_POST['post_tags'];
 
-         $post_image = $_FILES['post_image']['name'];
-         $post_image_temp = $_FILES['post_image']['tmp_name'];
+        $post_image = $_FILES['post_image']['name'];
+        $post_image_temp = $_FILES['post_image']['tmp_name'];
 
-         $post_date = date('d-m-y');
-         $post_comment_count = 0;
+        $post_date = date('d-m-y');
+        $post_comment_count = 0;
 
-         move_uploaded_file($post_image_temp, "../images/$post_image");
+        move_uploaded_file($post_image_temp, "../images/$post_image");
 
-         $query = "INSERT INTO tblposts(post_title, post_author, category_id, post_date, post_image, post_content, post_tags, post_comment_count, post_status) ";
-         $query .= "VALUES('{$post_title}', '{$post_author}', {$category_id}, now(), '{$post_image}', '{$post_content}', '{$post_tags}', '${post_comment_count}', '{$post_status}')";
+        $query = "INSERT INTO tblposts(post_title, post_author, category_id, post_date, post_image, post_content, post_tags, post_comment_count, post_status) ";
+        $query .= "VALUES('{$post_title}', '{$post_author}', {$category_id}, now(), '{$post_image}', '{$post_content}', '{$post_tags}', '${post_comment_count}', '{$post_status}')";
 
         $result = mysqli_query($connection, $query);
+
+        $post_id = mysqli_insert_id($connection);
 
         if(!$result) {
             die("SQL error " . mysqli_error($connection));
         } else {
             echo "<div class='alert alert-success alert-dismissible' role='alert'>
             <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
-            Post added successfully. <a href='posts.php'>Back to Posts</a></div>";
+            Post added successfully. <a href='../post.php?post_id={$post_id}'>View Post</a></div>";
         }
 
     }

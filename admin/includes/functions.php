@@ -170,12 +170,12 @@
                 echo "<tr>";
                 echo "<td><input type='checkbox' name='checkboxArray[]' class='checkbox' value='{$post_id}'></td>";
                 echo "<td>{$post_id}</td>";
-                echo "<td>{$post_title}</td>";
+                echo "<td><a href='../post.php?post_id={$post_id}'>{$post_title}</a></td>";
                 echo "<td>{$post_content}</td>";
                 echo "<td>{$post_author}</td>";
                 echo "<td>{$category_title}</td>";
                 echo "<td>{$post_status}</td>";
-                echo "<td><img width=100 src='../images/{$post_image}'></td>";
+                echo "<td><img width=100 src='../images/{$post_image}' alt='Post image'></td>";
                 echo "<td>{$post_tags}</td>";
                 echo "<td>{$comments_count}</td>";
                 echo "<td>{$post_views_count}</td>";

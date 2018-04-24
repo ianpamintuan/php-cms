@@ -94,7 +94,7 @@
                 <th>Comments</th>
                 <th>Views</th>
                 <th>Date</th>
-                <th colspan=2>Options</th>
+                <th colspan=2 class="text-center">Options</th>
             </tr>
         </thead>
         <tbody>

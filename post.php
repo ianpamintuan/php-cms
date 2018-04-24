@@ -76,14 +76,27 @@
                         $comment_content = $_POST['comment_content'];
                         $comment_email = $_POST['comment_email'];
 
-                        $query = "INSERT INTO tblcomments(comment_author, comment_email, comment_content, comment_status, comment_date, post_id) VALUES('{$comment_author}', '{$comment_email}', '{$comment_content}', 'Unapproved', now(), {$post_id})";
-                        $result = mysqli_query($connection, $query);
+                        if(!empty($comment_author) && !empty($comment_content) && !empty($comment_email)) {
 
-                        if(!$result) {
-                            die("SQL Error " . mysqli_error($connection));
+                            $query = "INSERT INTO tblcomments(comment_author, comment_email, comment_content, comment_status, comment_date, post_id) VALUES('{$comment_author}', '{$comment_email}', '{$comment_content}', 'Unapproved', now(), {$post_id})";
+                            $result = mysqli_query($connection, $query);
+
+                            if(!$result) {
+                                die("SQL Error " . mysqli_error($connection));
+                            } else {
+                                echo "<div class='alert alert-success alert-dismissible' role='alert'>
+                                    <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
+                                    Thanks for commenting. Your comment is now submitted for review. </div>";
+                            }
                         } else {
-                            echo "Your comment is now submitted for review.";
+
+                            echo "<div class='alert alert-danger alert-dismissible' role='alert'>
+                                    <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
+                                    Please complete all the fields required. </div>";
+
                         }
+
+                        
                     }
 
                 ?>
@@ -93,13 +106,13 @@
                     <h4>Leave a Comment:</h4>
                     <form method="post" role="form">
                         <div class="form-group">
-                            <input type="text" class="form-control" name="comment_author" placeholder="Your Name">
+                            <input type="text" class="form-control" name="comment_author" placeholder="Your Name" required>
                         </div>
                         <div class="form-group">
-                            <input type="email" class="form-control" name="comment_email" placeholder="Your Email">
+                            <input type="email" class="form-control" name="comment_email" placeholder="Your Email" required>
                         </div>
                         <div class="form-group">
-                            <textarea class="form-control" rows="3" placeholder="Enter your comment" name="comment_content"></textarea>
+                            <textarea class="form-control" rows="3" placeholder="Enter your comment" name="comment_content" required></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary" name="create_comment">Submit</button>
                     </form>

@@ -17,6 +17,8 @@
                         <button class="btn btn-primary" type="submit" name="login">
                             Login
                         </button>
+
+                        <a href="registration.php" class="btn btn-default">Register</a>
                         
                     </form>
                     <!-- /.input-group -->

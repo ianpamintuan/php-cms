@@ -8,6 +8,7 @@
 
         $cat_title = strip_tags($_POST['title']);
         $cat_title = htmlspecialchars($cat_title);
+        $cat_title = mysqli_real_escape_string($connection, $cat_title);
 
         $query = "UPDATE tblcategories SET category_title='{$cat_title}' WHERE category_id=$id;";
 

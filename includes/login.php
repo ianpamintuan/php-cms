@@ -6,11 +6,8 @@
 
     if(isset($_POST['login'])) {
 
-        $username = $_POST['username'];
-        $password = $_POST['password'];
-
-        $username = mysqli_real_escape_string($connection, $username);
-        $password = mysqli_real_escape_string($connection, $password);
+        $username = mysqli_real_escape_string($connection, $_POST['username']);
+        $password = mysqli_real_escape_string($connection, $_POST['password']);
 
         $query = "SELECT * FROM tblusers WHERE BINARY username = '{$username}'";
         $result = mysqli_query($connection, $query);

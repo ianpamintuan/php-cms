@@ -72,9 +72,9 @@
 
                         $post_id = $_GET['post_id'];
 
-                        $comment_author = $_POST['comment_author'];
-                        $comment_content = $_POST['comment_content'];
-                        $comment_email = $_POST['comment_email'];
+                        $comment_author = mysqli_real_escape_string($connection, $_POST['comment_author']);
+                        $comment_content = mysqli_real_escape_string($connection, $_POST['comment_content']);
+                        $comment_email = mysqli_real_escape_string($connection, $_POST['comment_email']);
 
                         if(!empty($comment_author) && !empty($comment_content) && !empty($comment_email)) {
 

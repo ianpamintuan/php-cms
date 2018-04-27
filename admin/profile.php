@@ -105,6 +105,7 @@
 
                         <div class="form-group">
                             <label for="user_email">Email</label>
+                            <input type="email" class="form-control" name="user_email" value="<?php echo isset($user_email) ? $user_email : ''; ?>" required>
                         </div>
 
                         <div class="form-group">

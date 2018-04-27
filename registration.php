@@ -11,7 +11,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-xs-6 col-xs-offset-3">
-
+                        
                         <?php
                         
                             if(isset($_POST['submit'])) {
@@ -24,20 +24,10 @@
 
                                 if(!empty($first_name) && !empty($last_name) && !empty($username) && !empty($email) && !empty($password)) {
 
-                                    $query = "SELECT randSalt FROM tblusers WHERE randSalt IS NOT NULL";
-                                    $salt_query = mysqli_query($connection, $query);
-    
-                                    if(!$salt_query) {
-                                        die("SQL Error " . mysqli_error($connection));
-                                    } else {
-                                        $row = mysqli_fetch_array($salt_query);
-                                        $salt = $row['randSalt'];
-                                    }
-
-                                    $password = crypt($password, $salt);
+                                    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
                                     $query = "INSERT INTO tblusers(firstname, lastname, email, username, password) ";
-                                    $query .= "VALUES('{$first_name}', '{$last_name}', '{$email}', '{$username}', '{$password}')";
+                                    $query .= "VALUES('{$first_name}', '{$last_name}', '{$email}', '{$username}', '{$hashed_password}')";
                            
                                     $result = mysqli_query($connection, $query);
                             

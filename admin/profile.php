@@ -58,8 +58,10 @@
                             $user_email = $_POST['user_email'];
                             $user_username = $_POST['user_username'];
                             $user_password = $_POST['user_password'];
+                            
+                            $hashed_password = password_hash($user_password, PASSWORD_DEFAULT);
                     
-                            $query = "UPDATE tblusers SET firstname = '{$user_firstname}', lastname = '{$user_lastname}', user_role = '{$user_role}', email = '{$user_email}', username = '{$user_username}', password = '{$user_password}' ";
+                            $query = "UPDATE tblusers SET firstname = '{$user_firstname}', lastname = '{$user_lastname}', user_role = '{$user_role}', email = '{$user_email}', username = '{$user_username}', password = '{$hashed_password}' ";
                             $query .= "WHERE user_id = $user_id";
                     
                             $result = mysqli_query($connection, $query);
@@ -67,7 +69,9 @@
                             if(!$result) {
                                 die("SQL error " . mysqli_error($connection));
                             } else {
-                                echo "Profile updated successfully!";
+                                echo "<div class='alert alert-success alert-dismissible' role='alert'>
+                                <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
+                                Profile updated successfully.</div>";
                             }
                     
                         }
@@ -78,16 +82,16 @@
 
                         <div class="form-group">
                             <label for="user_firstname">First Name</label>
-                            <input type="text" class="form-control" name="user_firstname" value="<?php echo isset($user_firstname) ? $user_firstname : ''; ?>">
+                            <input type="text" class="form-control" name="user_firstname" value="<?php echo isset($user_firstname) ? $user_firstname : ''; ?>" required>
                         </div>
 
                         <div class="form-group">
                             <label for="user_lastname">Last Name</label>
-                            <input type="text" class="form-control" name="user_lastname" value="<?php echo isset($user_lastname) ? $user_lastname : ''; ?>">
+                            <input type="text" class="form-control" name="user_lastname" value="<?php echo isset($user_lastname) ? $user_lastname : ''; ?>" required>
                         </div>
                         <div class="form-group">
                             <label for="roles">User Role</label>
-                            <select name="roles" id="roles" class="form-control">
+                            <select name="roles" id="roles" class="form-control" required>
                                 <option value='<?php echo $user_role; ?>'><?php echo $user_role; ?></option>
                                 <?php 
                                     if($user_role !== 'Admin')
@@ -101,17 +105,16 @@
 
                         <div class="form-group">
                             <label for="user_email">Email</label>
-                            <input type="text" class="form-control" name="user_email" value="<?php echo isset($user_email) ? $user_email : ''; ?>">
                         </div>
 
                         <div class="form-group">
                             <label for="user_username">Username</label>
-                            <input type="text" class="form-control" name="user_username" value="<?php echo isset($user_username) ? $user_username : ''; ?>">
+                            <input type="text" class="form-control" name="user_username" value="<?php echo isset($user_username) ? $user_username : ''; ?>" required>
                         </div>
 
                         <div class="form-group">
                             <label for="user_password">Password</label>
-                            <input type="password" class="form-control" name="user_password" value="<?php echo isset($user_password) ? $user_password : ''; ?>">
+                            <input type="password" class="form-control" name="user_password" required>
                         </div>
 
                         <div class="form-group">

@@ -4,15 +4,17 @@
 
     if(isset($_POST['add_user'])) {
 
-         $user_firstname = $_POST['user_firstname'];
-         $user_lastname = $_POST['user_lastname'];
-         $user_role = $_POST['roles'];
-         $user_email = $_POST['user_email'];
-         $user_username = $_POST['user_username'];
-         $user_password = $_POST['user_password'];
+        $user_firstname = $_POST['user_firstname'];
+        $user_lastname = $_POST['user_lastname'];
+        $user_role = $_POST['roles'];
+        $user_email = $_POST['user_email'];
+        $user_username = $_POST['user_username'];
+        $user_password = $_POST['user_password'];
 
-         $query = "INSERT INTO tblusers(firstname, lastname, user_role, email, username, password) ";
-         $query .= "VALUES('{$user_firstname}', '{$user_lastname}', '{$user_role}', '{$user_email}', '{$user_username}', '{$user_password}')";
+        $hashed_password = password_hash($user_password, PASSWORD_DEFAULT);
+
+        $query = "INSERT INTO tblusers(firstname, lastname, user_role, email, username, password) ";
+        $query .= "VALUES('{$user_firstname}', '{$user_lastname}', '{$user_role}', '{$user_email}', '{$user_username}', '{$hashed_password}')";
 
         $result = mysqli_query($connection, $query);
 
@@ -32,35 +34,35 @@
 
     <div class="form-group">
         <label for="user_firstname">First Name</label>
-        <input type="text" class="form-control" name="user_firstname">
+        <input type="text" class="form-control" name="user_firstname" required>
     </div>
 
     <div class="form-group">
         <label for="user_lastname">Last Name</label>
-        <input type="text" class="form-control" name="user_lastname">
+        <input type="text" class="form-control" name="user_lastname" required>
     </div>
 
     <div class="form-group">
         <label for="roles">User Role</label>
-        <select name="roles" id="roles" class="form-control">
+        <select name="roles" id="roles" class="form-control" required>
             <option value="Admin">Admin</option>
-            <option value="User">User</option>
+            <option value="Subscriber">Subscriber</option>
         </select>
     </div>
 
     <div class="form-group">
         <label for="user_email">Email</label>
-        <input type="text" class="form-control" name="user_email">
+        <input type="email" class="form-control" name="user_email" required>
     </div>
 
     <div class="form-group">
         <label for="user_username">Username</label>
-        <input type="text" class="form-control" name="user_username">
+        <input type="text" class="form-control" name="user_username" required>
     </div>
 
     <div class="form-group">
         <label for="user_password">Password</label>
-        <input type="password" class="form-control" name="user_password">
+        <input type="password" class="form-control" name="user_password" required>
     </div>
 
     <div class="form-group">

@@ -181,8 +181,7 @@
                 echo "<td>{$post_views_count}</td>";
                 echo "<td>{$post_date}</td>";
                 echo "<td><a href='posts.php?src=edit_post&edit={$post_id}'>Edit</td>";
-                echo "<td><a href='posts.php?delete={$post_id}'>Delete</td>";
-
+                echo "<td><a id='delete' href='#' data-id='{$post_id}'>Delete</td>";
                 echo "</tr>";
             }                
     
@@ -205,7 +204,7 @@
             if(!$result) {
                 die("Query Failed " . mysqli_error());
             } else {
-                header("Location: posts.php");
+                header("Location: posts.php?message=delete_success");
             }
 
         }

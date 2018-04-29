@@ -123,7 +123,7 @@
         
         global $connection;
         
-        $query = "SELECT * FROM tblposts;";
+        $query = "SELECT * FROM tblposts ORDER BY post_id DESC;";
                 
         $result = mysqli_query($connection, $query);
         

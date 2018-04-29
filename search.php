@@ -36,6 +36,7 @@
                                 
                                 while($row = mysqli_fetch_assoc($result)) {
             
+                                    $posts_info['post_id'] = $row['post_id'];
                                     $posts_info['post_title'] = $row['post_title'];
                                     $posts_info['post_author'] = $row['post_author'];
                                     $posts_info['post_date'] = $row['post_date'];
@@ -46,10 +47,10 @@
                 
                                 <!--  Blog Post -->
                                 <h2>
-                                    <a href="#"><?php echo $posts_info['post_title']; ?></a>
+                                <a href="post.php?post_id=<?php echo $posts_info['post_id']; ?>"><?php echo $posts_info['post_title']; ?></a>
                                 </h2>
                                 <p class="lead">
-                                    by <a href="index.php"><?php echo $posts_info['post_author']; ?></a>
+                                    by <a href="author_posts.php?post_author=<?php echo $posts_info['post_author']; ?>"><?php echo $posts_info['post_author']; ?></a>
                                 </p>
                                 <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo $posts_info['post_date']; ?></p>
                                 <hr>

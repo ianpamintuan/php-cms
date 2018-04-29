@@ -1,5 +1,5 @@
 <?php require_once('includes/header.php'); ?>
-    
+
     <?php require_once('includes/nav.php'); ?>
 
     <?php session_start(); ?>
@@ -12,24 +12,27 @@
             <!-- Blog Entries Column -->
             <div class="col-md-8">
 
-                <h1 class="page-header">
-                    Blog Posts
-                </h1>
-
                 <?php
                     
+                    if(isset($_GET['post_author'])) {
+                        $post_author = $_GET['post_author'];
+                    }
+
                     $posts_info = array();
                     
-                    $query = "SELECT * FROM tblposts WHERE post_status = 'Published'";
+                    $query = "SELECT * FROM tblposts WHERE post_author = '{$post_author}'";
                     
                     $result = mysqli_query($connection, $query);
                     
                     if($result) {
                     
-                        //add code on counting the result query
-                        if(empty($result) || mysqli_num_rows($result) < 1) {
-                            echo "<h1 class='page-header'>No published blog posts found.</h1>";
-                        }
+                    ?>
+
+                    <h1 class="page-header">
+                        Posts by <?php echo $post_author; ?>
+                    </h1>
+
+                    <?php
 
                         while($row = mysqli_fetch_assoc($result)) {
 
@@ -38,7 +41,7 @@
                             $posts_info['post_author'] = $row['post_author'];
                             $posts_info['post_date'] = $row['post_date'];
                             $posts_info['post_image'] = $row['post_image'];
-                            $posts_info['post_content'] = substr($row['post_content'], 0, 250);
+                            $posts_info['post_content'] = $row['post_content'];
                             
                 ?>
 
@@ -57,21 +60,18 @@
                 </p>
                 <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo $posts_info['post_date']; ?></p>
                 <hr>
-                <a href="post.php?post_id=<?php echo $posts_info['post_id']; ?>">
-                    <img class="img-responsive" src="images/<?php echo $posts_info['post_image']; ?>" alt="Post image">
-                </a>
+                <img class="img-responsive" src="images/<?php echo $posts_info['post_image']; ?>" alt="">
                 <hr>
-                <p><?php echo $posts_info['post_content'] . '...'; ?></p>
-                <a class="btn btn-primary" href="post.php?post_id=<?php echo $posts_info['post_id']; ?>">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
+                <p><?php echo $posts_info['post_content']; ?></p>
 
                 <hr>
 
                 <?php   }
-                        
+                    
                     }
 
                 ?>
-
+                
                 <!-- Pager -->
                 <ul class="pager">
                     <li class="previous">

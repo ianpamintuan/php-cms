@@ -14,6 +14,19 @@
                 
                     switch($bulk_options) {
     
+                        case 'Clone':
+                        $clone_query = "INSERT INTO tblposts(post_title, post_author, category_id, post_date, post_image, post_content, post_tags, post_status) ";
+                        $clone_query .= "SELECT post_title, post_author, category_id, post_date, post_image, post_content, post_tags, post_status FROM tblposts WHERE post_id = {$checkbox}" ;
+                        $clone_result = mysqli_query($connection, $clone_query);
+
+                        if(!$clone_result) {
+                            die("SQL Error " . mysqli_error($connection));
+                        } else {
+
+                        }
+
+                        break;
+
                         case 'Published':
                         $query = "UPDATE tblposts SET post_status = '{$bulk_options}' WHERE post_id = {$checkbox}";
                         break;
@@ -28,23 +41,28 @@
     
                     }
                    
-                    $result = mysqli_query($connection, $query);
-    
-                    if(!$result) {
-                        echo "SQL Error. " . mysqli_error($connection);
+                    if(isset($query)) {
+
+                        $result = mysqli_query($connection, $query);
+
+                        if(!$result) {
+                            echo "SQL Error. " . mysqli_error($connection);
+                        }
+
                     }
-    
+
                 }
-    
+
                 echo "<div class='alert alert-success alert-dismissible' role='alert'>
                 <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
                 Successful in updating posts.</div>";
+                
 
             } else {
 
                 echo "<div class='alert alert-danger alert-dismissible' role='alert'>
                 <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
-                Please choose post(s) to update.</div>";
+                Please choose post(s) to {$bulk_options}.</div>";
 
             }
 
@@ -65,6 +83,7 @@
 
             <select name="bulk_options" id="" class="form-control">
                 <option value="">Select an option</option>
+                <option value="Clone">Clone</option>
                 <option value="Published">Published</option>
                 <option value="Draft">Draft</option>
                 <option value="Delete">Delete</option>

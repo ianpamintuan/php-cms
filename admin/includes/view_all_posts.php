@@ -43,8 +43,8 @@
             } else {
 
                 echo "<div class='alert alert-danger alert-dismissible' role='alert'>
-            <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
-            Please choose post(s) to update.</div>";
+                <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
+                Please choose post(s) to update.</div>";
 
             }
 
@@ -78,6 +78,27 @@
     </div>
 
     <br>
+
+    <?php
+    
+    //set notification message here
+        if(isset($_GET['message'])) {
+
+            $message = $_GET['message'];
+
+            switch($message) {
+
+                case 'delete_success':
+                echo "<div class='alert alert-success alert-dismissible' role='alert'>
+                <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
+                Successful in deleting post(s).</div>";
+                break;
+
+            }
+
+        }
+
+    ?>
         
     <table class="table table-bordered table-hover">
         <thead>

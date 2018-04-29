@@ -170,6 +170,17 @@
 
             </div>
 
+            <?php
+            
+                $views_query = "UPDATE tblposts SET post_views_count = post_views_count + 1 WHERE post_id = {$post_id}";
+                $views_result = mysqli_query($connection, $views_query);
+
+                if(!$views_result) {
+                    die("SQL Error on Views " . mysqli_error($connection));
+                }
+                    
+            ?>
+
             <!-- Blog Sidebar Widgets Column -->
             <?php require_once('includes/sidebar.php') ?>
 

@@ -178,7 +178,7 @@
                 echo "<td><img width=100 src='../images/{$post_image}' alt='Post image'></td>";
                 echo "<td>{$post_tags}</td>";
                 echo "<td>{$comments_count}</td>";
-                echo "<td>{$post_views_count}</td>";
+                echo "<td><a id='reset_views' href='#' data-id='{$post_id}'>{$post_views_count}</a></td>";
                 echo "<td>{$post_date}</td>";
                 echo "<td><a href='posts.php?src=edit_post&edit={$post_id}'>Edit</td>";
                 echo "<td><a id='delete_post' href='#' data-id='{$post_id}'>Delete</td>";
@@ -205,6 +205,28 @@
                 die("Query Failed " . mysqli_error());
             } else {
                 header("Location: posts.php?message=delete_success");
+            }
+
+        }
+
+    }
+
+    function resetViews() {
+
+        global $connection;
+
+        if(isset($_GET['reset_views'])) {
+
+            $post_id = $_GET['reset_views'];
+
+            $query = "UPDATE tblposts SET post_views_count = 0 WHERE post_id={$post_id}";
+
+            $result = mysqli_query($connection, $query);
+
+            if(!$result) {
+                die("Query Failed " . mysqli_error());
+            } else {
+                header("Location: posts.php?message=reset_view_success");
             }
 
         }

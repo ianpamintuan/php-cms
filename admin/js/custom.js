@@ -59,6 +59,19 @@ $(document).ready(function(){
 
     });
 
+    $(document).on('click', '#reset_views' ,function(e) {
+
+        var id = $(this).data("id");
+
+        alertify.confirm("Confirm", "Do you want to reset views for this post?",
+        function(){
+            window.location.href = "posts.php?reset_views=" + id;
+        },
+        function(){
+        }).set('labels', {ok:'Yes', cancel:'No'});
+
+    });
+
 });
 
 $(document).on('click', '#editSave', function (e) {

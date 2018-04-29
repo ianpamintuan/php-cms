@@ -37,13 +37,13 @@ $(document).ready(function(){
         });
     });
 
-    $(document).on('click', '#delete' ,function(e) {
+    $(document).on('click', '#delete_post' ,function(e) {
 
         var id = $(this).data("id");
 
         alertify.confirm("Confirm", "Do you want to delete this post?",
         function(){
-            window.location = "posts.php?delete=" + id;
+            window.location.href = "posts.php?delete=" + id;
         },
         function(){
         }).set('labels', {ok:'Yes', cancel:'No'});

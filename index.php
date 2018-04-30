@@ -17,10 +17,38 @@
                 </h1>
 
                 <?php
+
+                    $posts_per_page = 2;
+
+                    if(isset($_GET['page'])) {
+
+                        $page = $_GET['page'];
+
+                    } else {
+
+                        $page = "";
+
+                    }
+
+                    if($page === "" || $page === 1) {
+
+                        $offset = 0;
+
+                    } else {
+
+                        $offset = ($page * $posts_per_page) - $posts_per_page;
+
+                    }
+
+                    $posts_query_count = "SELECT * FROM tblposts WHERE post_status = 'Published'";
+                    $posts_count_result = mysqli_query($connection, $posts_query_count);
+                    $posts_count = mysqli_num_rows($posts_count_result);
+
+                    $pagination = ceil($posts_count / $posts_per_page);
                     
                     $posts_info = array();
                     
-                    $query = "SELECT * FROM tblposts WHERE post_status = 'Published'";
+                    $query = "SELECT * FROM tblposts WHERE post_status = 'Published' LIMIT {$offset}, {$posts_per_page}";
                     
                     $result = mysqli_query($connection, $query);
                     
@@ -71,6 +99,26 @@
                     }
 
                 ?>
+
+                <ul class="pager">
+
+                    <?php
+                    
+                        for($i = 1; $i <= $pagination; $i++) {
+
+                            if($i == 1 && $page == "") {
+                                echo "<li><a class='active' href='index.php?page={$i}'>{$i}</a></li>";
+                            } elseif($i == $page) {
+                                echo "<li><a class='active' href='index.php?page={$i}'>{$i}</a></li>";
+                            } else {
+                                echo "<li><a href='index.php?page={$i}'>{$i}</a></li>";
+                            }
+                            
+                        }
+
+                    ?>
+
+                </ul>
 
                 <!-- Pager -->
                 <ul class="pager">

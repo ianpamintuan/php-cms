@@ -96,9 +96,6 @@ function loadUsersOnline() {
         url : 'includes/functions.php?online_users=result',
         success : function(data){
             $('#online_users').html(data);
-        },
-        error: function(message){
-            alert("Error: " + message.statusText);
         }
     });
 
@@ -106,4 +103,4 @@ function loadUsersOnline() {
 
 setInterval(function() {
     loadUsersOnline();
-}, 1000);
+}, 500);

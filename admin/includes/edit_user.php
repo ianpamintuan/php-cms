@@ -5,6 +5,10 @@
     if(isset($_GET['src']) == 'edit_user') {
 
         $user_id = $_GET['user_id'];
+
+        if(!is_numeric($user_id)) {
+            header("Location: index.php");
+        }
         
         $query = "SELECT * FROM tblusers WHERE user_id = {$user_id}";
 
@@ -13,6 +17,12 @@
         if(!$result) {
             die("SQL error " . mysqli_error($connection));
         } else {
+
+            echo mysqli_num_rows($result);
+
+            if(mysqli_num_rows($result) == NULL) {
+                header("Location: index.php");
+            }
 
             while($row = mysqli_fetch_assoc($result)) {
 
@@ -26,6 +36,10 @@
             }            
 
         }
+
+    } else {
+
+        header("Location: index.php");
 
     }
 

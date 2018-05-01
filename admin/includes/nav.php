@@ -11,6 +11,7 @@
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
+                <li><a href="#">Online Users: <span id="online_users"></span></a></li>
                 <li><a href="/php-cms">Home</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?php echo $_SESSION['first_name'] . " " . $_SESSION['last_name']; ?> <b class="caret"></b></a>

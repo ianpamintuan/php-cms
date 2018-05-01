@@ -7,7 +7,6 @@ $(document).ready(function(){
     $('#load-screen').delay(500).fadeOut(500, function() {
         $(this).remove();
     });
-    
 
     tinymce.init({
         selector: 'textarea',
@@ -83,9 +82,28 @@ $(document).on('click', '#editSave', function (e) {
             $('#message').html(data);
             $('#editModal').modal('hide');
         },
-        error: function(){
-            alert("Error");
+        error: function(err){
+            alert("Error " + err.statusText);
         }
     });
 
 });
+
+function loadUsersOnline() {
+
+    $.ajax({
+        type : 'get',
+        url : 'includes/functions.php?online_users=result',
+        success : function(data){
+            $('#online_users').html(data);
+        },
+        error: function(message){
+            alert("Error: " + message.statusText);
+        }
+    });
+
+}
+
+setInterval(function() {
+    loadUsersOnline();
+}, 1000);

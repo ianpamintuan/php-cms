@@ -1,6 +1,48 @@
-<?php require_once('../includes/db.php'); ?>
-
 <?php
+
+    function countOnlineUsers() {
+
+        if(isset($_GET['online_users'])) {
+        
+            global $connection;
+
+            if(!$connection) {
+                session_start();
+                require_once('../../includes/db.php');
+            }
+
+            $session = session_id();
+            $time = time();
+            $seconds = 10;
+            $timeout = $time - $seconds;
+
+            $sessions_query = "SELECT * FROM tblsessions WHERE session = '{$session}'";
+            $sessions_result = mysqli_query($connection, $sessions_query);
+            $online_count = mysqli_num_rows($sessions_result);
+
+            if($online_count == NULL) {
+                
+                $sessions_insert_query = "INSERT INTO tblsessions(session, time) VALUES('{$session}', {$time})";
+                $sessions_insert_query_result = mysqli_query($connection, $sessions_insert_query);
+
+            } else {
+
+                $sessions_update_query = "UPDATE tblsessions SET time = {$time} WHERE session = '{$session}'";
+                $sessions_update_result = mysqli_query($connection, $sessions_update_query);
+
+            }
+
+            $session_online_query = "SELECT * FROM tblsessions WHERE time > {$timeout}";
+            $session_online_result = mysqli_query($connection, $session_online_query);
+            $online_users_count = mysqli_num_rows($session_online_result);
+
+            echo $online_users_count;
+
+        }
+
+    }
+
+    countOnlineUsers();
 
     function displayCategories($type, $cat_id = 0) {
 

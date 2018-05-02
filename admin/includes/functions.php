@@ -196,17 +196,15 @@
                     }                    
                 }
 
-                $count_query = "SELECT COUNT(post_id) AS comments_count FROM tblcomments WHERE post_id = {$post_id}";
+                $count_query = "SELECT post_id AS comments_count FROM tblcomments WHERE post_id = {$post_id}";
                 $count_result = mysqli_query($connection, $count_query);
 
                 if(!$count_result) {
                     die("SQL Error " . mysqli_error($connection));
                 } else {
-                    while($row = mysqli_fetch_array($count_result)) {
-                        $comments_count = $row['comments_count']; 
+                        $comments_count = mysqli_num_rows($count_result);
                         $count_update_query = "UPDATE tblposts SET post_comment_count = {$comments_count} WHERE post_id = {$post_id}";
-                        $count_update_result = mysqli_query($connection, $count_update_query);
-                    }                    
+                        $count_update_result = mysqli_query($connection, $count_update_query);     
                 }
 
                 echo "<tr>";
@@ -219,7 +217,7 @@
                 echo "<td>{$post_status}</td>";
                 echo "<td><img width=100 src='../images/{$post_image}' alt='Post image'></td>";
                 echo "<td>{$post_tags}</td>";
-                echo "<td>{$comments_count}</td>";
+                echo "<td><a href='comments.php?post_id={$post_id}'>{$comments_count}</a></td>";
                 echo "<td><a id='reset_views' href='#' data-id='{$post_id}'>{$post_views_count}</a></td>";
                 echo "<td>{$post_date}</td>";
                 echo "<td><a href='posts.php?src=edit_post&edit={$post_id}'>Edit</td>";
@@ -303,7 +301,22 @@
 
         global $connection;
 
-        $query = "SELECT * FROM tblcomments";
+        if(isset($_GET['post_id'])) {
+
+            $post_id = $_GET['post_id'];
+            $post_id = mysqli_real_escape_string($connection, $post_id);
+
+            if(!is_numeric($post_id)) {
+                header("Location: comments.php");
+            }
+
+            $query = "SELECT * FROM tblcomments WHERE post_id = {$post_id}";
+
+        } else {
+
+            $query = "SELECT * FROM tblcomments";
+
+        }
 
         $result = mysqli_query($connection, $query);
 

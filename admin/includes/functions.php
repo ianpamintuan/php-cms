@@ -245,6 +245,7 @@
                 die("Query Failed " . mysqli_error());
             } else {
                 header("Location: posts.php?message=delete_success");
+                exit();
             }
 
         }
@@ -267,6 +268,7 @@
                 die("Query Failed " . mysqli_error());
             } else {
                 header("Location: posts.php?message=reset_view_success");
+                exit();
             }
 
         }
@@ -290,7 +292,6 @@
                 $category_title = $row['category_title'];
                 echo "<select>";
 
-
             }        
 
         }
@@ -308,6 +309,7 @@
 
             if(!is_numeric($post_id)) {
                 header("Location: comments.php");
+                exit();
             }
 
             $query = "SELECT * FROM tblcomments WHERE post_id = {$post_id}";
@@ -325,6 +327,7 @@
         } else {
 
             while($row = mysqli_fetch_assoc($result)) {
+
                 $comment_id = $row['comment_id'];
                 $comment_author = $row['comment_author'];
                 $comment_email = $row['comment_email'];
@@ -344,16 +347,28 @@
                 $posts_query = "SELECT * FROM tblposts WHERE post_id = {$post_id}";
                 $posts_result = mysqli_query($connection, $posts_query);
 
-                while($comment = mysqli_fetch_assoc($posts_result)) {
-                    $comment_post_id = $comment['post_id'];
-                    $post_title = $comment['post_title'];
-                    echo "<td><a href='../post.php?post_id=" . $comment_post_id . "'>{$post_title}</a></td>";
+                $post = mysqli_fetch_assoc($posts_result);
+                $comment_post_id = $post['post_id'];
+                $post_title = $post['post_title'];
+                echo "<td><a href='../post.php?post_id=" . $comment_post_id . "'>{$post_title}</a></td>";
+
+                if(isset($_GET['post_id'])) {
+
+                    $post_id = $_GET['post_id'];
+                    $post_id = mysqli_real_escape_string($connection, $post_id);
+
+                    echo "<td><a href='comments.php?approve=1&comment_id={$comment_id}&post_id={$post_id}'>Approve</td>";
+                    echo "<td><a href='comments.php?approve=0&comment_id={$comment_id}&post_id={$post_id}'>Unapprove</td>";
+                    echo "<td><a href='comments.php?delete={$comment_id}&post_id={$post_id}'>Delete</td>";
+
+                } else {
+                    
+                    echo "<td><a href='comments.php?approve=1&comment_id={$comment_id}'>Approve</td>";
+                    echo "<td><a href='comments.php?approve=0&comment_id={$comment_id}'>Unapprove</td>";
+                    echo "<td><a href='comments.php?delete={$comment_id}'>Delete</td>";
+
                 }
 
-                echo "<td><a href='comments.php?approve=1&comment_id={$comment_id}'>Approve</td>";
-                echo "<td><a href='comments.php?approve=0&comment_id={$comment_id}'>Unapprove</td>";
-                echo "<td><a href='comments.php?delete={$comment_id}'>Delete</td>";
-    
                 echo "</tr>";
             }
 
@@ -368,6 +383,12 @@
         if(isset($_GET['delete'])) {
             
             $comment_id = $_GET['delete'];
+            $comment_id = mysqli_real_escape_string($connection, $comment_id);
+
+            if(!is_numeric($comment_id)) {
+                header("Location: comments.php");
+                exit();
+            }
 
             $query = "DELETE FROM tblcomments WHERE comment_id={$comment_id}";
 
@@ -376,7 +397,21 @@
             if(!$result) {
                 die("Query Failed " . mysqli_error());
             } else {
-                header("Location: comments.php");
+                
+                if(isset($_GET['post_id'])) {
+
+                    $post_id = $_GET['post_id'];
+                    $post_id = mysqli_real_escape_string($connection, $post_id);
+
+                    header("Location: comments.php?post_id={$post_id}");
+                    exit();
+
+                } else {
+
+                    header("Location: comments.php");
+                    exit();
+                }
+
             }
 
         }
@@ -389,9 +424,14 @@
 
         if(isset($_GET['approve'])) {
             
-            $approve = $_GET['approve'];
+            $approve = mysqli_real_escape_string($connection, $_GET['approve']);
 
-            $comment_id = $_GET['comment_id'];
+            $comment_id = mysqli_real_escape_string($connection, $_GET['comment_id']);
+
+            if(!is_numeric($approve) || !is_numeric($comment_id)) {
+                header("Location: comments.php");
+                exit();
+            }
 
             if($approve == 1) {
 
@@ -410,7 +450,22 @@
             if(!$result) {
                 die("Query Failed " . mysqli_error($connection));
             } else {
-                header("Location: comments.php");
+
+                if(isset($_GET['post_id'])) {
+
+                    $post_id = $_GET['post_id'];
+                    $post_id = mysqli_real_escape_string($connection, $post_id);
+
+                    header("Location: comments.php?post_id={$post_id}");
+                    exit();
+
+                } else {
+
+                    header("Location: comments.php");
+                    exit();
+
+                }
+
             }
 
         }
@@ -475,6 +530,7 @@
                 die("Query Failed " . mysqli_error($connection));
             } else {
                 header("Location: users.php");
+                exit();
             }
 
         }
@@ -496,6 +552,7 @@
                 die("Query Failed " . mysqli_error($connection));
             } else {
                 header("Location: users.php");
+                exit();
             }
 
 
@@ -510,6 +567,7 @@
                 die("Query Failed " . mysqli_error($connection));
             } else {
                 header("Location: users.php");
+                exit();
             }
 
         }

@@ -543,17 +543,32 @@
 
         if(isset($_GET['delete'])) {
             
-            $user_id = $_GET['delete'];
+            if(isset($_SESSION['user_role'])) {
 
-            $query = "DELETE FROM tblusers WHERE user_id={$user_id}";
+                $user_role = $_SESSION['user_role'];
 
-            $result = mysqli_query($connection, $query);
+                if($user_role == "Admin") {
 
-            if(!$result) {
-                die("Query Failed " . mysqli_error($connection));
-            } else {
-                header("Location: users.php");
-                exit();
+                    $user_id = mysqli_real_escape_string($connection, $_GET['delete']);
+    
+                    if(!is_numeric($user_id)) {
+                        header("Location: users.php");
+                        exit();
+                    }
+
+                    $query = "DELETE FROM tblusers WHERE user_id={$user_id}";
+
+                    $result = mysqli_query($connection, $query);
+
+                    if(!$result) {
+                        die("Query Failed " . mysqli_error($connection));
+                    } else {
+                        header("Location: users.php");
+                        exit();
+                    }
+
+                }
+
             }
 
         }

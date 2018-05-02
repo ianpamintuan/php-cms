@@ -4,12 +4,12 @@
 
     if(isset($_POST['create_post'])) {
 
-        $post_title = mysqli_real_escape_string($connection, $_POST['post_title']);
-        $post_author = mysqli_real_escape_string($connection, $_POST['post_author']);
-        $post_content = mysqli_real_escape_string($connection, $_POST['post_content']);
-        $category_id = mysqli_real_escape_string($connection, $_POST['category_id']);
-        $post_status = mysqli_real_escape_string($connection, $_POST['post_status']);
-        $post_tags = mysqli_real_escape_string($connection, $_POST['post_tags']);
+        $post_title = clean($_POST['post_title']);
+        $post_author = clean($_POST['post_author']);
+        $post_content = clean($_POST['post_content']);
+        $category_id = clean($_POST['category_id']);
+        $post_status = clean($_POST['post_status']);
+        $post_tags = clean($_POST['post_tags']);
 
         $post_image = $_FILES['post_image']['name'];
         $post_image_temp = $_FILES['post_image']['tmp_name'];
@@ -42,18 +42,13 @@
 
     <div class="form-group">
         <label for="title">Post Title</label>
-        <input type="text" class="form-control" name="post_title">
+        <input type="text" class="form-control" name="post_title" required>
     </div>
 
     <div class="form-group">
         <label for="category_id">Post Category</label>
         <?php displayCategories("dropdown"); ?>
     </div>
-
-<!--     <div class="form-group">
-        <label for="post_author">Post Author</label>
-        <input type="text" class="form-control" name="post_author">
-    </div> -->
 
     <div class="form-group">
         <label for="post_author">Post Author</label>

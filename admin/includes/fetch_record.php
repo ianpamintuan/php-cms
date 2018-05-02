@@ -1,10 +1,11 @@
 <?php require_once('../../includes/db.php'); ?>
+<?php require_once('functions.php'); ?>
 
 <?php
 
     if(isset($_POST['row_id'])) {
 
-        $id = $_POST['row_id'];
+        $id = clean($_POST['row_id']);
 
         $query = "SELECT * FROM tblcategories WHERE category_id = $id";
         

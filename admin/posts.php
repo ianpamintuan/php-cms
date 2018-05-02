@@ -20,7 +20,7 @@
                         <?php
                         
                             if(isset($_GET['src'])) {
-                                $src = $_GET['src'];
+                                $src = clean($_GET['src']);
                             } else {
                                 $src = "";
                             }

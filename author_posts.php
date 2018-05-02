@@ -15,7 +15,7 @@
                 <?php
                     
                     if(isset($_GET['post_author'])) {
-                        $post_author = $_GET['post_author'];
+                        $post_author = clean($_GET['post_author']);
                     }
 
                     $posts_info = array();
@@ -29,7 +29,13 @@
                     ?>
 
                     <h1 class="page-header">
-                        Posts by <?php echo $post_author; ?>
+                        <?php 
+                            if(mysqli_num_rows($result) != NULL) {
+                                echo "Posts by {$post_author}";
+                            } else {
+                                echo "No post found on your author request.";
+                            }
+                        ?>
                     </h1>
 
                     <?php

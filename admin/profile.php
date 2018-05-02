@@ -52,12 +52,12 @@
                         
                         if(isset($_POST['update_profile'])) {
 
-                            $user_firstname = mysqli_real_escape_string($connection, $_POST['user_firstname']);
-                            $user_lastname = mysqli_real_escape_string($connection, $_POST['user_lastname']);
-                            $user_role = mysqli_real_escape_string($connection, $_POST['roles']);
-                            $user_email = mysqli_real_escape_string($connection, $_POST['user_email']);
-                            $user_username = mysqli_real_escape_string($connection, $_POST['user_username']);
-                            $user_password = mysqli_real_escape_string($connection, $_POST['user_password']);
+                            $user_firstname = clean($_POST['user_firstname']);
+                            $user_lastname = clean($_POST['user_lastname']);
+                            $user_role = clean($_POST['roles']);
+                            $user_email = clean($_POST['user_email']);
+                            $user_username = clean($_POST['user_username']);
+                            $user_password = clean($_POST['user_password']);
                             
                             $hashed_password = password_hash($user_password, PASSWORD_DEFAULT);
                     

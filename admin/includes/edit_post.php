@@ -2,10 +2,15 @@
 
     if(isset($_GET['edit'])) {
 
-        $post_id = $_GET['edit'];
+        $post_id = clean($_GET['edit']);
 
         $query = "SELECT * FROM tblposts WHERE post_id={$post_id}";
         $result = mysqli_query($connection, $query);
+
+        if(!is_numeric($post_id) || mysqli_num_rows($result) == NULL) {
+            header("Location: posts.php");
+            exit();
+        }
 
         if(!$result) {
             die("SQL Error " . mysqli_error());
@@ -35,12 +40,12 @@
     
     if(isset($_POST['update_post'])) {
 
-        $post_title = mysqli_real_escape_string($connection, $_POST['post_title']);
-        $post_author = mysqli_real_escape_string($connection, $_POST['post_author']);
-        $post_content = mysqli_real_escape_string($connection, $_POST['post_content']);
-        $category_id = mysqli_real_escape_string($connection, $_POST['category_id']);
-        $post_status = mysqli_real_escape_string($connection, $_POST['post_status']);
-        $post_tags = mysqli_real_escape_string($connection, $_POST['post_tags']);
+        $post_title = clean($_POST['post_title']);
+        $post_author = clean($_POST['post_author']);
+        $post_content = clean($_POST['post_content']);
+        $category_id = clean($_POST['category_id']);
+        $post_status = clean($_POST['post_status']);
+        $post_tags = clean($_POST['post_tags']);
         
         $post_image = $_FILES['post_image']['name'];
         $post_image_temp = $_FILES['post_image']['tmp_name'];
@@ -48,12 +53,14 @@
         move_uploaded_file($post_image_temp, "../images/$post_image");
 
         if(empty($post_image)) {
+
             $image_query = "SELECT * FROM tblposts WHERE post_id = {$post_id}";
             $image_result = mysqli_query($connection, $image_query);
 
             while($row = mysqli_fetch_array($image_result)) {
                 $post_image = $row['post_image']; 
             }
+        
         }
 
         $query = "UPDATE tblposts SET post_title = '{$post_title}', post_author = '{$post_author}', category_id = {$category_id}, post_content = '{$post_content}', post_status = '{$post_status}', post_tags = '{$post_tags}', post_image = '{$post_image}' WHERE post_id = {$post_id}";
@@ -75,7 +82,7 @@
 
     <div class="form-group">
         <label for="title">Post Title</label>
-        <input type="text" class="form-control" name="post_title" value="<?php echo $post_title; ?>">
+        <input type="text" class="form-control" name="post_title" value="<?php echo $post_title; ?>" required>
     </div>
 
     <div class="form-group">

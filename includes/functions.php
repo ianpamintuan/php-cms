@@ -1,6 +1,13 @@
 <?php require_once('db.php'); ?>
 <?php
 
+    function clean($value) {
+
+        global $connection;
+        return mysqli_real_escape_string($connection, trim($value));
+        
+    }
+
     function getCategories() {
         
         global $connection;

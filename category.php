@@ -13,7 +13,7 @@
                 <?php
 
                     if(isset($_GET['category'])) {
-                        $category_id = $_GET['category'];
+                        $category_id = clean($_GET['category']);
                     }
 
                     $category_query = "SELECT category_title FROM tblcategories WHERE category_id = {$category_id}";
@@ -24,7 +24,13 @@
                     } ?>
 
                     <h1 class="page-header">
-                    <?php echo $category; ?>
+                        <?php
+                            if(mysqli_num_rows($category_result) != NULL) {
+                                echo $category;
+                            } else {
+                                echo "Category not found.";
+                            }
+                        ?>
                     </h1>
                     
                     <?php

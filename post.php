@@ -15,7 +15,7 @@
                 <?php
                     
                     if(isset($_GET['post_id'])) {
-                        $post_id = $_GET['post_id'];
+                        $post_id = clean($_GET['post_id']);
                     }
 
                     $posts_info = array();
@@ -23,6 +23,13 @@
                     $query = "SELECT * FROM tblposts JOIN tblusers ON tblusers.user_id = tblposts.post_author WHERE post_id = {$post_id}";
                     
                     $result = mysqli_query($connection, $query);
+
+                    if($post_id == NULL || !is_numeric($post_id) || mysqli_num_rows($result) == NULL) {
+
+                        header("Location: index.php");
+                        exit();
+
+                    }
                     
                     if($result) {
                     
@@ -72,9 +79,9 @@
 
                         $post_id = $_GET['post_id'];
 
-                        $comment_author = mysqli_real_escape_string($connection, $_POST['comment_author']);
-                        $comment_content = mysqli_real_escape_string($connection, $_POST['comment_content']);
-                        $comment_email = mysqli_real_escape_string($connection, $_POST['comment_email']);
+                        $comment_author = clean($_POST['comment_author']);
+                        $comment_content = clean($_POST['comment_content']);
+                        $comment_email = clean($_POST['comment_email']);
 
                         if(!empty($comment_author) && !empty($comment_content) && !empty($comment_email)) {
 
@@ -96,7 +103,6 @@
 
                         }
 
-                        
                     }
 
                 ?>

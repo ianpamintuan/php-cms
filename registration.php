@@ -16,11 +16,11 @@
                         
                             if(isset($_POST['submit'])) {
                                 
-                                $first_name = mysqli_real_escape_string($connection, $_POST['first-name']);
-                                $last_name = mysqli_real_escape_string($connection, $_POST['last-name']);
-                                $username = mysqli_real_escape_string($connection, $_POST['username']);
-                                $email = mysqli_real_escape_string($connection, $_POST['email']);
-                                $password = mysqli_real_escape_string($connection, $_POST['password']);
+                                $first_name = clean($_POST['first-name']);
+                                $last_name = clean($_POST['last-name']);
+                                $username = clean($_POST['username']);
+                                $email = clean($_POST['email']);
+                                $password = clean($_POST['password']);
 
                                 if(!empty($first_name) && !empty($last_name) && !empty($username) && !empty($email) && !empty($password)) {
 

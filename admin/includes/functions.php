@@ -1,5 +1,12 @@
 <?php
 
+    function clean($value) {
+
+        global $connection;
+        return mysqli_real_escape_string($connection, trim($value));
+        
+    }
+
     function countOnlineUsers() {
 
         if(isset($_GET['online_users'])) {
@@ -94,7 +101,7 @@
         
         if (isset($_POST['submit']) ) {
 
-            $cat_name = $_POST["category"];
+            $cat_name = clean($_POST["category"]);
 
             if(trim($cat_name) == "" || empty($cat_name)) {
 
@@ -138,7 +145,7 @@
             
             global $connection;
 
-            $cat_id = $_GET['delete'];
+            $cat_id = clean($_GET['delete']);
             
             $query = "DELETE FROM tblcategories WHERE category_id={$cat_id}";
             
@@ -235,7 +242,7 @@
 
         if(isset($_GET['delete'])) {
             
-            $post_id = $_GET['delete'];
+            $post_id = clean($_GET['delete']);
 
             $query = "DELETE FROM tblposts WHERE post_id={$post_id}";
 
@@ -258,7 +265,7 @@
 
         if(isset($_GET['reset_views'])) {
 
-            $post_id = $_GET['reset_views'];
+            $post_id = clean($_GET['reset_views']);
 
             $query = "UPDATE tblposts SET post_views_count = 0 WHERE post_id={$post_id}";
 
@@ -304,8 +311,7 @@
 
         if(isset($_GET['post_id'])) {
 
-            $post_id = $_GET['post_id'];
-            $post_id = mysqli_real_escape_string($connection, $post_id);
+            $post_id = clean($_GET['post_id']);
 
             if(!is_numeric($post_id)) {
                 header("Location: comments.php");
@@ -382,8 +388,7 @@
 
         if(isset($_GET['delete'])) {
             
-            $comment_id = $_GET['delete'];
-            $comment_id = mysqli_real_escape_string($connection, $comment_id);
+            $comment_id = clean($_GET['delete']);
 
             if(!is_numeric($comment_id)) {
                 header("Location: comments.php");
@@ -424,13 +429,15 @@
 
         if(isset($_GET['approve'])) {
             
-            $approve = mysqli_real_escape_string($connection, $_GET['approve']);
+            $approve = clean($_GET['approve']);
 
-            $comment_id = mysqli_real_escape_string($connection, $_GET['comment_id']);
+            $comment_id = clean($_GET['comment_id']);
 
             if(!is_numeric($approve) || !is_numeric($comment_id)) {
+
                 header("Location: comments.php");
                 exit();
+
             }
 
             if($approve == 1) {
@@ -453,8 +460,7 @@
 
                 if(isset($_GET['post_id'])) {
 
-                    $post_id = $_GET['post_id'];
-                    $post_id = mysqli_real_escape_string($connection, $post_id);
+                    $post_id = clean($_GET['post_id']);
 
                     header("Location: comments.php?post_id={$post_id}");
                     exit();
@@ -579,9 +585,9 @@
 
         global $connection;
 
-        if(isset($_GET['change_to_admin'])) {
+        if(isset($_GET['change_to_admin']) && isset($_GET['user_id'])) {
 
-            $user_id = $_GET['user_id'];
+            $user_id = clean($_GET['user_id']);
             $query = "UPDATE tblusers SET user_role = 'Admin' WHERE user_id={$user_id}";
 
             $result = mysqli_query($connection, $query);
@@ -593,10 +599,9 @@
                 exit();
             }
 
+        } else if(isset($_GET['change_to_sub']) && isset($_GET['user_id'])) {
 
-        } else if(isset($_GET['change_to_sub'])) {
-
-            $user_id = $_GET['user_id'];
+            $user_id = clean($_GET['user_id']);
             $query = "UPDATE tblusers SET user_role = 'Subscriber' WHERE user_id={$user_id}";
 
             $result = mysqli_query($connection, $query);

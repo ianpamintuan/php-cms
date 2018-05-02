@@ -22,7 +22,7 @@
 
                     if(isset($_GET['page'])) {
 
-                        $page = $_GET['page'];
+                        $page = clean($_GET['page']);
 
                     } else {
 

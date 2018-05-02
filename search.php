@@ -18,7 +18,7 @@
 
                     if(isset($_GET['search']) ) {
     
-                        $search = $_GET['search'];
+                        $search = clean($_GET['search']);
     
                         $query = "SELECT * FROM tblposts JOIN tblusers ON tblusers.user_id = tblposts.post_author WHERE post_tags LIKE '%$search%';";
     

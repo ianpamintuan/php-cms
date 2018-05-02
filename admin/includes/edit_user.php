@@ -4,23 +4,19 @@
 
     if(isset($_GET['src']) == 'edit_user') {
 
-        $user_id = $_GET['user_id'];
-
-        if(!is_numeric($user_id)) {
-            header("Location: index.php");
-        }
+        $user_id = clean($_GET['user_id']);
         
         $query = "SELECT * FROM tblusers WHERE user_id = {$user_id}";
-
         $result = mysqli_query($connection, $query);
+
+        if(!is_numeric($user_id) || mysqli_num_rows($result) == NULL) {
+            header("Location: users.php");
+            exit();
+        }
 
         if(!$result) {
             die("SQL error " . mysqli_error($connection));
         } else {
-
-            if(mysqli_num_rows($result) == NULL) {
-                header("Location: index.php");
-            }
 
             while($row = mysqli_fetch_assoc($result)) {
 
@@ -37,18 +33,19 @@
 
     } else {
 
-        header("Location: index.php");
+        header("Location: users.php");
+        exit();
 
     }
 
     if(isset($_POST['edit_user'])) {
 
-        $user_firstname = mysqli_real_escape_string($connection, $_POST['user_firstname']);
-        $user_lastname = mysqli_real_escape_string($connection, $_POST['user_lastname']);
-        $user_role = mysqli_real_escape_string($connection, $_POST['roles']);
-        $user_email = mysqli_real_escape_string($connection, $_POST['user_email']);
-        $user_username = mysqli_real_escape_string($connection, $_POST['user_username']);
-        $user_password = mysqli_real_escape_string($connection, $_POST['user_password']);
+        $user_firstname = clean($_POST['user_firstname']);
+        $user_lastname = clean($_POST['user_lastname']);
+        $user_role = clean($_POST['roles']);
+        $user_email = clean($_POST['user_email']);
+        $user_username = clean($_POST['user_username']);
+        $user_password = clean($_POST['user_password']);
 
         $hashed_password = password_hash($user_password, PASSWORD_DEFAULT);
 

@@ -8,6 +8,7 @@
 
     if($_SESSION['user_role'] !== "Admin") {
         header("Location: ../index.php");
+        exit();
     }
 
 ?>

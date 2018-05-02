@@ -4,7 +4,7 @@
 
     if (isset($_POST['title'])) {
 
-        $id = $_POST['cat_id'];
+        $id = clean($_POST['cat_id']);
 
         $cat_title = strip_tags($_POST['title']);
         $cat_title = htmlspecialchars($cat_title);

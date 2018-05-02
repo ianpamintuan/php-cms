@@ -50,9 +50,14 @@
         <?php displayCategories("dropdown"); ?>
     </div>
 
-    <div class="form-group">
+<!--     <div class="form-group">
         <label for="post_author">Post Author</label>
         <input type="text" class="form-control" name="post_author">
+    </div> -->
+
+    <div class="form-group">
+        <label for="post_author">Post Author</label>
+        <?php displayUsers("dropdown"); ?>
     </div>
 
     <div class="form-group">

@@ -20,7 +20,7 @@
     
                         $search = $_GET['search'];
     
-                        $query = "SELECT * FROM tblposts WHERE post_tags LIKE '%$search%';";
+                        $query = "SELECT * FROM tblposts JOIN tblusers ON tblusers.user_id = tblposts.post_author WHERE post_tags LIKE '%$search%';";
     
                         $result = mysqli_query($connection, $query);
     
@@ -38,7 +38,7 @@
             
                                     $posts_info['post_id'] = $row['post_id'];
                                     $posts_info['post_title'] = $row['post_title'];
-                                    $posts_info['post_author'] = $row['post_author'];
+                                    $posts_info['post_author'] = $row['username'];
                                     $posts_info['post_date'] = $row['post_date'];
                                     $posts_info['post_image'] = $row['post_image'];
                                     $posts_info['post_content'] = $row['post_content'];

@@ -85,7 +85,7 @@
 
     <div class="form-group">
         <label for="post_author">Post Author</label>
-        <input type="text" class="form-control" name="post_author" value="<?php echo $post_author; ?>">
+        <?php displayUsers("dropdown", $post_author); ?>
     </div>
 
     <div class="form-group">

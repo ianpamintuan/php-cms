@@ -18,8 +18,6 @@
             die("SQL error " . mysqli_error($connection));
         } else {
 
-            echo mysqli_num_rows($result);
-
             if(mysqli_num_rows($result) == NULL) {
                 header("Location: index.php");
             }

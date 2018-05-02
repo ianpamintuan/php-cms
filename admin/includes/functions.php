@@ -165,7 +165,7 @@
         
         global $connection;
         
-        $query = "SELECT * FROM tblposts ORDER BY post_id DESC;";
+        $query = "SELECT * FROM tblposts JOIN tblusers ON tblusers.user_id = tblposts.post_author ORDER BY post_id DESC;";
                 
         $result = mysqli_query($connection, $query);
         
@@ -176,7 +176,7 @@
                 $post_id = $row['post_id'];
                 $post_title = $row['post_title'];
                 $post_content = $row['post_content'];
-                $post_author = $row['post_author'];
+                $post_author = $row['username'];
                 $category_id = $row['category_id'];
                 $post_status = $row['post_status'];
                 $post_image = $row['post_image'];
@@ -472,7 +472,7 @@
 
     }
 
-    function displayUsersTable() {
+    function displayUsers($type, $author_id = 0) {
 
         global $connection;
 
@@ -484,30 +484,53 @@
             die("Query Failed" . mysqli_error());
         } else {
 
-            while($row = mysqli_fetch_assoc($result)) {
-                $user_id = $row['user_id'];
-                $username = $row['username'];
-                $firstname = $row['firstname'];
-                $lastname = $row['lastname'];
-                $user_email = $row['email'];
-                $user_image = $row['image'];
-                $user_role = $row['user_role'];
+            if($type == "table") {
 
-                echo "<tr>";
-                echo "<td>{$user_id}</td>";
-                echo "<td>{$username}</td>";
-                echo "<td>{$firstname}</td>";
-                echo "<td>{$lastname}</td>";
-                echo "<td>{$user_email}</td>";
-                echo "<td>{$user_image}</td>";
-                echo "<td>{$user_role}</td>";
+                while($row = mysqli_fetch_assoc($result)) {
 
-                echo "<td><a href='users.php?change_to_admin=1&user_id={$user_id}'>Admin</td>";
-                echo "<td><a href='users.php?change_to_sub=1&user_id={$user_id}'>Subscriber</td>";
-                echo "<td><a href='users.php?src=edit_user&user_id={$user_id}'>Edit</td>";
-                echo "<td><a href='users.php?delete={$user_id}'>Delete</td>";
+                    $user_id = $row['user_id'];
+                    $username = $row['username'];
+                    $firstname = $row['firstname'];
+                    $lastname = $row['lastname'];
+                    $user_email = $row['email'];
+                    $user_image = $row['image'];
+                    $user_role = $row['user_role'];
     
-                echo "</tr>";
+                    echo "<tr>";
+                    echo "<td>{$user_id}</td>";
+                    echo "<td>{$username}</td>";
+                    echo "<td>{$firstname}</td>";
+                    echo "<td>{$lastname}</td>";
+                    echo "<td>{$user_email}</td>";
+                    echo "<td>{$user_image}</td>";
+                    echo "<td>{$user_role}</td>";
+    
+                    echo "<td><a href='users.php?change_to_admin=1&user_id={$user_id}'>Admin</td>";
+                    echo "<td><a href='users.php?change_to_sub=1&user_id={$user_id}'>Subscriber</td>";
+                    echo "<td><a href='users.php?src=edit_user&user_id={$user_id}'>Edit</td>";
+                    echo "<td><a href='users.php?delete={$user_id}'>Delete</td>";
+        
+                    echo "</tr>";
+                }
+
+            } else {
+
+                echo "<select class='form-control' name='post_author'>";
+
+                while($row = mysqli_fetch_assoc($result)) {
+
+                    $user_id = $row['user_id'];
+                    $username = $row['username']; 
+                    if($user_id == $author_id) {
+                        echo "<option value='{$user_id}' selected>" . $username . "</option>";
+                    } else {
+                        echo "<option value='{$user_id}'>" . $username . "</option>";
+                    }
+                    
+                }
+
+                echo "</select>";
+
             }
 
         }

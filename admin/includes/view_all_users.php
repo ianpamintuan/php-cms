@@ -12,7 +12,7 @@
         </tr>
     </thead>
     <tbody>
-        <?php displayUsersTable(); ?>
+        <?php displayUsers("table"); ?>
         <?php deleteUser(); ?>
         <?php changeRole(); ?>
     </tbody>

@@ -14,6 +14,9 @@
 
                     if(isset($_GET['category'])) {
                         $category_id = clean($_GET['category']);
+                    } else {
+                        header("Location: index.php");
+                        exit();
                     }
 
                     $category_query = "SELECT category_title FROM tblcategories WHERE category_id = {$category_id}";
@@ -37,7 +40,7 @@
 
                     $posts_info = array();
                     
-                    $query = "SELECT * FROM tblposts JOIN tblusers ON tblusers.user_id = tblposts.post_author WHERE category_id = {$category_id};";
+                    $query = "SELECT * FROM tblposts JOIN tblusers ON tblusers.user_id = tblposts.post_author WHERE category_id = {$category_id} AND post_status = 'Published' ORDER BY post_id DESC";
                     
                     $result = mysqli_query($connection, $query);
                     

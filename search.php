@@ -20,7 +20,7 @@
     
                         $search = clean($_GET['search']);
     
-                        $query = "SELECT * FROM tblposts JOIN tblusers ON tblusers.user_id = tblposts.post_author WHERE post_tags LIKE '%$search%';";
+                        $query = "SELECT * FROM tblposts JOIN tblusers ON tblusers.user_id = tblposts.post_author WHERE post_tags LIKE '%$search%' AND post_status = 'Published' ORDER BY post_id DESC";
     
                         $result = mysqli_query($connection, $query);
     

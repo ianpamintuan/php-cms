@@ -16,11 +16,14 @@
                     
                     if(isset($_GET['post_author'])) {
                         $post_author = clean($_GET['post_author']);
+                    } else {
+                        header("Location: index.php");
+                        exit();
                     }
 
                     $posts_info = array();
                     
-                    $query = "SELECT * FROM tblposts JOIN tblusers ON tblusers.user_id = tblposts.post_author WHERE BINARY username = '{$post_author}'";
+                    $query = "SELECT * FROM tblposts JOIN tblusers ON tblusers.user_id = tblposts.post_author WHERE BINARY username = '{$post_author}' AND post_status = 'Published' ORDER BY post_id DESC";
                     
                     $result = mysqli_query($connection, $query);
                     

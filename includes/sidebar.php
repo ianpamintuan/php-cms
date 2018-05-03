@@ -5,23 +5,42 @@
 
                 <!-- Login Well -->
                 <div class="well">
-                    <h4>Login Form</h4>
-                    <form action="includes/login.php" method="POST">
-                        <div class="form-group">
-                            <input type="text" class="form-control" name="username" placeholder="Username">
-                        </div>
-                        <div class="form-group">
-                            <input type="password" class="form-control" name="password" placeholder="Password">
-                        </div>
-                        
-                        <button class="btn btn-primary" type="submit" name="login">
-                            Login
-                        </button>
 
-                        <a href="registration.php" class="btn btn-default">Register</a>
-                        
-                    </form>
-                    <!-- /.input-group -->
+                     <?php
+                    
+                    if(isset($_SESSION['username'])) {
+
+                    ?>
+                        <form action="includes/logout.php" method="post">
+                            <h3>Logged in as <span class="label label-primary"><?php echo $_SESSION['username']; ?></span></h3>
+                            <a href="includes/logout.php" class="btn btn-danger">Logout</a>
+                        </form>
+                    <?php
+                        } else {
+
+                    ?>
+
+                        <h4>Login Form</h4>
+                        <form action="includes/login.php" method="POST">
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="username" placeholder="Username">
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control" name="password" placeholder="Password">
+                            </div>
+                            
+                            <button class="btn btn-primary" type="submit" name="login">
+                                Login
+                            </button>
+
+                            <a href="registration.php" class="btn btn-default">Register</a>
+                            
+                        </form>
+                        <!-- /.input-group -->
+                    
+                    <?php
+                        }
+                    ?>
                 </div>
 
                 <!-- Blog Search Well -->

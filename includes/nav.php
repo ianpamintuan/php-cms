@@ -11,12 +11,13 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/php-cms">MyCMS</a>
+                <a class="navbar-brand" href="index.php">MyCMS</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <?php getCategories(); ?>
+                    <li><a href="/php-cms/contact.php">Contact</a></li>
                     <li><a href="/php-cms/admin">Admin</a></li>
                 </ul>
             </div>

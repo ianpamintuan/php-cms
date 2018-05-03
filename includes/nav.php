@@ -17,7 +17,31 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <?php getCategories(); ?>
-                    <li><a href="/php-cms/contact.php">Contact</a></li>
+                    <?php
+
+                        $pages = array(
+                            'Registration' => 'registration.php',
+                            'Contact' => 'contact.php'
+                        );
+
+                        $class = "";
+
+                        $page_name = basename($_SERVER['PHP_SELF']);
+
+                        foreach($pages as $page => $url) {
+
+                            echo $url . " " . $page;
+
+                            if($url == $page_name) {
+                                echo "<li class='active'><a href='/php-cms/{$url}'>{$page}</a></li>";
+                            } else {
+                                echo "<li><a href='/php-cms/{$url}'>{$page}</a></li>";
+                            }
+
+                        }
+
+                    ?>
+                    
                     <li><a href="/php-cms/admin">Admin</a></li>
                 </ul>
             </div>

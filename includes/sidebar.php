@@ -11,11 +11,10 @@
                     if(isset($_SESSION['username'])) {
 
                     ?>
-                        <form action="includes/logout.php" method="post">
-                            <h3>Logged in as <span class="label label-primary"><?php echo $_SESSION['username']; ?></span></h3>
-                            <a href="includes/logout.php" class="btn btn-danger">Logout</a>
-                        </form>
+                        <h3>Logged in as <span class="label label-primary"><?php echo $_SESSION['username']; ?></span></h3>
+                        <a href="includes/logout.php" class="btn btn-danger">Logout</a>
                     <?php
+
                         } else {
 
                     ?>
@@ -39,7 +38,9 @@
                         <!-- /.input-group -->
                     
                     <?php
+
                         }
+                        
                     ?>
                 </div>
 

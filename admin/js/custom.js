@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-    var loader_div = "<div id='load-screen'><div id='loading'></div></div>"
+    var loader_div = "<div id='load-screen'><div id='loading'></div></div>";
 
     $('body').prepend(loader_div);
 

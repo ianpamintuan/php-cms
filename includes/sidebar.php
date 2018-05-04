@@ -1,5 +1,4 @@
 <?php require_once('db.php'); ?>
-<?php require_once('functions.php'); ?>
 
             <div class="col-md-4">
 

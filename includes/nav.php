@@ -1,5 +1,4 @@
 <?php require_once('db.php'); ?>
-<?php require_once('functions.php'); ?>
 <!-- Navigation -->
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">

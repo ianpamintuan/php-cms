@@ -1,3 +1,4 @@
+<?php require_once('admin/includes/functions.php'); ?>
 <!DOCTYPE html>
 <html lang="en">
 

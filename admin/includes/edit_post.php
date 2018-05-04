@@ -1,5 +1,8 @@
 <?php
 
+    $search = array("\\\\",  "\x00", "\r\n",  "\'",  '\"');
+    $replace = array("\\","\\0", " ", "'", '\"');
+
     if(isset($_GET['edit'])) {
 
         $post_id = clean($_GET['edit']);
@@ -42,7 +45,8 @@
 
         $post_title = clean($_POST['post_title']);
         $post_author = clean($_POST['post_author']);
-        $post_content = clean($_POST['post_content']);
+        $post_content = $_POST['post_content'];
+        $post_content_escaped = clean($_POST['post_content']);
         $category_id = clean($_POST['category_id']);
         $post_status = clean($_POST['post_status']);
         $post_tags = clean($_POST['post_tags']);
@@ -63,13 +67,14 @@
         
         }
 
-        $query = "UPDATE tblposts SET post_title = '{$post_title}', post_author = '{$post_author}', category_id = {$category_id}, post_content = '{$post_content}', post_status = '{$post_status}', post_tags = '{$post_tags}', post_image = '{$post_image}' WHERE post_id = {$post_id}";
+        $query = "UPDATE tblposts SET post_title = '{$post_title}', post_author = '{$post_author}', category_id = {$category_id}, post_content = '{$post_content_escaped}', post_status = '{$post_status}', post_tags = '{$post_tags}', post_image = '{$post_image}' WHERE post_id = {$post_id}";
 
         $result = mysqli_query($connection, $query);
 
         if(!$result) {
             die("SQL Error" . mysqli_error($connection));
         } else {
+            //header("Location: posts.php?src=edit_post&edit={$post_id}");
             echo "<div class='alert alert-success alert-dismissible' role='alert'>
             <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
             Post updated successfully. <a href='../post.php?post_id={$post_id}'>View Post</a></div>";

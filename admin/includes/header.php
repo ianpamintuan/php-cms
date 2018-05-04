@@ -3,6 +3,15 @@
 <?php require_once('../includes/db.php'); ?>
 <?php require_once('functions.php'); ?>
 
+<?php
+
+    if(!isset($_SESSION['user_role'])) {
+        header("Location: ../index.php");
+        exit();
+    }
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 

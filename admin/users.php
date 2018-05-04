@@ -1,6 +1,15 @@
 <?php require_once('includes/header.php'); ?>
 <?php require_once('includes/functions.php'); ?>
 
+    <?php
+
+        if(!isAdmin($_SESSION['username'])) {
+            header("Location: index.php");
+            exit();
+        }
+
+    ?>
+
     <div id="wrapper">
 
         <!-- Navigation -->

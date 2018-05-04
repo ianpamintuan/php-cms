@@ -623,4 +623,28 @@
 
     }
 
+    function isAdmin($username) {
+
+        global $connection;
+
+        $query = "SELECT user_role FROM tblusers WHERE BINARY username = '{$username}'";
+        $result = mysqli_query($connection, $query);
+
+        if(!$result) {
+            die("SQL Error " . mysqli_error($connection));
+        } else {
+            
+            $row = mysqli_fetch_array($result);
+            $user_role = $row['user_role'];
+
+            if($user_role == 'Admin') {
+                return true;
+            } else {
+                return false;
+            }
+
+        }
+
+    }
+
 ?>

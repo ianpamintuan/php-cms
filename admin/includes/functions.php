@@ -617,4 +617,20 @@
 
     }
 
+    function countRecords($table, $filter = "", $value = "") {
+
+        global $connection;
+
+        if(!empty($filter)) {
+            $query = "SELECT * FROM {$table} WHERE {$filter} = '{$value}'";
+        } else {
+            $query = "SELECT * FROM {$table}";
+        }
+
+        $result = mysqli_query($connection, $query);
+
+        return mysqli_num_rows($result);
+
+    }
+
 ?>

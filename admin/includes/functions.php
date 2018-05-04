@@ -674,4 +674,40 @@
 
     }
 
+    function userDetailDuplicate($filter, $value) {
+        
+        global $connection;
+
+        $query = "SELECT * FROM tblusers WHERE {$filter} = '{$value}'";
+        $result = mysqli_query($connection, $query);
+
+        if(!$result) {
+            die("SQL Error " . mysqli_error($connection));
+        } else {
+
+            if(mysqli_num_rows($result) > 0) {
+                return true;
+            } else {
+                return false;
+            }
+
+        }
+
+    }
+
+    function register($first_name, $last_name, $email, $username, $hashed_password) {
+
+        global $connection;
+
+        $query = "INSERT INTO tblusers(firstname, lastname, email, username, password) ";
+        $query .= "VALUES('{$first_name}', '{$last_name}', '{$email}', '{$username}', '{$hashed_password}')";
+                            
+        $result = mysqli_query($connection, $query);
+
+        if(!$result) {
+            die("SQL error " . mysqli_error($connection));
+        }
+
+    }
+
 ?>

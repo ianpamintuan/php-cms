@@ -29,8 +29,6 @@
 
                         foreach($pages as $page => $url) {
 
-                            echo $url . " " . $page;
-
                             if($url == $page_name) {
                                 echo "<li class='active'><a href='/php-cms/{$url}'>{$page}</a></li>";
                             } else {

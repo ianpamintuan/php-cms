@@ -172,7 +172,7 @@
         
         global $connection;
         
-        $query = "SELECT * FROM tblposts JOIN tblusers ON tblusers.user_id = tblposts.post_author ORDER BY post_id DESC;";
+        $query = "SELECT * FROM tblposts JOIN tblusers ON tblusers.user_id = tblposts.post_author JOIN tblcategories ON tblcategories.category_id = tblposts.category_id ORDER BY post_id DESC;";
                 
         $result = mysqli_query($connection, $query);
         
@@ -191,17 +191,7 @@
                 $post_comment_count = $row['post_comment_count'];
                 $post_views_count = $row['post_views_count'];
                 $post_date = $row['post_date'];
-
-                $category_query = "SELECT category_title FROM tblcategories WHERE category_id = {$category_id}";
-                $category_result = mysqli_query($connection, $category_query);
-
-                if(!$category_result) {
-                    die("SQL Error " . mysqli_error($connection));
-                } else {
-                    while($row = mysqli_fetch_array($category_result)) {
-                        $category_title = $row['category_title']; 
-                    }                    
-                }
+                $category_title = $row['category_title'];
 
                 $count_query = "SELECT post_id AS comments_count FROM tblcomments WHERE post_id = {$post_id}";
                 $count_result = mysqli_query($connection, $count_query);
@@ -209,9 +199,9 @@
                 if(!$count_result) {
                     die("SQL Error " . mysqli_error($connection));
                 } else {
-                        $comments_count = mysqli_num_rows($count_result);
-                        $count_update_query = "UPDATE tblposts SET post_comment_count = {$comments_count} WHERE post_id = {$post_id}";
-                        $count_update_result = mysqli_query($connection, $count_update_query);     
+                    $comments_count = mysqli_num_rows($count_result);
+                    $count_update_query = "UPDATE tblposts SET post_comment_count = {$comments_count} WHERE post_id = {$post_id}";
+                    $count_update_result = mysqli_query($connection, $count_update_query);     
                 }
 
                 echo "<tr>";

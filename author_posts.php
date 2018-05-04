@@ -24,10 +24,9 @@
                     $posts_info = array();
                     
                     $query = "SELECT * FROM tblposts JOIN tblusers ON tblusers.user_id = tblposts.post_author WHERE BINARY username = '{$post_author}' AND post_status = 'Published' ORDER BY post_id DESC";
-                    
                     $result = mysqli_query($connection, $query);
-                    
-                    if($result) {
+
+                    checkQuery($result);
                     
                     ?>
 
@@ -75,11 +74,7 @@
 
                 <hr>
 
-                <?php   }
-                    
-                    }
-
-                ?>
+                <?php   }   ?>
                 
                 <!-- Pager -->
                 <ul class="pager">

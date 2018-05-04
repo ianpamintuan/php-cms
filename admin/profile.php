@@ -11,20 +11,16 @@
         $query = "SELECT * FROM tblusers WHERE user_id = {$user_id}";
         $result = mysqli_query($connection, $query);
 
-        if(!$result) {
-            die("SQL Error in the Profile query." . mysqli_error($connection));
-        } else {
+        checkQuery($result);
 
-            while($row = mysqli_fetch_array($result)) {
+        while($row = mysqli_fetch_array($result)) {
 
-                $user_firstname = $row['firstname'];
-                $user_lastname = $row['lastname'];
-                $user_role = $row['user_role'];
-                $user_email = $row['email'];
-                $user_username = $row['username'];
-                $user_password = $row['password'];
-
-            }
+            $user_firstname = $row['firstname'];
+            $user_lastname = $row['lastname'];
+            $user_role = $row['user_role'];
+            $user_email = $row['email'];
+            $user_username = $row['username'];
+            $user_password = $row['password'];
 
         }
 
@@ -62,17 +58,14 @@
                             $hashed_password = password_hash($user_password, PASSWORD_DEFAULT);
                     
                             $query = "UPDATE tblusers SET firstname = '{$user_firstname}', lastname = '{$user_lastname}', user_role = '{$user_role}', email = '{$user_email}', username = '{$user_username}', password = '{$hashed_password}' ";
-                            $query .= "WHERE user_id = $user_id";
-                    
+                            $query .= "WHERE user_id = $user_id";                   
                             $result = mysqli_query($connection, $query);
+
+                            checkQuery($result);
                     
-                            if(!$result) {
-                                die("SQL error " . mysqli_error($connection));
-                            } else {
-                                echo "<div class='alert alert-success alert-dismissible' role='alert'>
-                                <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
-                                Profile updated successfully.</div>";
-                            }
+                            echo "<div class='alert alert-success alert-dismissible' role='alert'>
+                            <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
+                            Profile updated successfully.</div>";
                     
                         }
 

@@ -49,24 +49,23 @@
                     $posts_info = array();
                     
                     $query = "SELECT * FROM tblposts JOIN tblusers ON tblusers.user_id = tblposts.post_author WHERE post_status = 'Published' LIMIT {$offset}, {$posts_per_page}";
-                    
                     $result = mysqli_query($connection, $query);
-                    
-                    if($result) {
-                    
-                        //add code on counting the result query
-                        if(empty($result) || mysqli_num_rows($result) < 1) {
-                            echo "<h1 class='page-header'>No published blog posts found.</h1>";
-                        }
 
-                        while($row = mysqli_fetch_assoc($result)) {
+                    checkQuery($result);
+                    
+                    //add code on counting the result query
+                    if(empty($result) || mysqli_num_rows($result) < 1) {
+                        echo "<h1 class='page-header'>No published blog posts found.</h1>";
+                    }
 
-                            $posts_info['post_id'] = $row['post_id'];
-                            $posts_info['post_title'] = $row['post_title'];
-                            $posts_info['post_author'] = $row['username'];
-                            $posts_info['post_date'] = $row['post_date'];
-                            $posts_info['post_image'] = $row['post_image'];
-                            $posts_info['post_content'] = substr($row['post_content'], 0, 250);
+                    while($row = mysqli_fetch_assoc($result)) {
+
+                        $posts_info['post_id'] = $row['post_id'];
+                        $posts_info['post_title'] = $row['post_title'];
+                        $posts_info['post_author'] = $row['username'];
+                        $posts_info['post_date'] = $row['post_date'];
+                        $posts_info['post_image'] = $row['post_image'];
+                        $posts_info['post_content'] = substr($row['post_content'], 0, 250);
                             
                 ?>
 
@@ -94,11 +93,7 @@
 
                 <hr>
 
-                <?php   }
-                        
-                    }
-
-                ?>
+                <?php   }   ?>
 
                 <ul class="pager">
 

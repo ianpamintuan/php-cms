@@ -21,52 +21,47 @@
                         $search = clean($_GET['search']);
     
                         $query = "SELECT * FROM tblposts JOIN tblusers ON tblusers.user_id = tblposts.post_author WHERE post_tags LIKE '%$search%' AND post_status = 'Published' ORDER BY post_id DESC";
-    
                         $result = mysqli_query($connection, $query);
-    
-                        if($result) {
+
+                        checkQuery($result);
                                 
-                            $count = mysqli_num_rows($result);
-    
-                            if($count == 0) {
-                                echo "<p>No result found.</p>";
-                            } else {
-                                
-                                $posts_info = array();
-                                
-                                while($row = mysqli_fetch_assoc($result)) {
-            
-                                    $posts_info['post_id'] = $row['post_id'];
-                                    $posts_info['post_title'] = $row['post_title'];
-                                    $posts_info['post_author'] = $row['username'];
-                                    $posts_info['post_date'] = $row['post_date'];
-                                    $posts_info['post_image'] = $row['post_image'];
-                                    $posts_info['post_content'] = $row['post_content'];
-                                        
-                                ?>
-                
-                                <!--  Blog Post -->
-                                <h2>
-                                <a href="post.php?post_id=<?php echo $posts_info['post_id']; ?>"><?php echo $posts_info['post_title']; ?></a>
-                                </h2>
-                                <p class="lead">
-                                    by <a href="author_posts.php?post_author=<?php echo $posts_info['post_author']; ?>"><?php echo $posts_info['post_author']; ?></a>
-                                </p>
-                                <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo $posts_info['post_date']; ?></p>
-                                <hr>
-                                <img class="img-responsive" src="images/<?php echo $posts_info['post_image']; ?>" alt="">
-                                <hr>
-                                <p><?php echo $posts_info['post_content']; ?></p>
-                                <a class="btn btn-primary" href="post.php?post_id=<?php echo $posts_info['post_id']; ?>">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
-                
-                                <hr>
-                
-                            <?php   }
-                
-                            }
-    
+                        $count = mysqli_num_rows($result);
+
+                        if($count == 0) {
+                            echo "<p>No result found.</p>";
                         } else {
-                            die("Query failed!" . mysqli_error($connection));
+                            
+                            $posts_info = array();
+                            
+                            while($row = mysqli_fetch_assoc($result)) {
+        
+                                $posts_info['post_id'] = $row['post_id'];
+                                $posts_info['post_title'] = $row['post_title'];
+                                $posts_info['post_author'] = $row['username'];
+                                $posts_info['post_date'] = $row['post_date'];
+                                $posts_info['post_image'] = $row['post_image'];
+                                $posts_info['post_content'] = $row['post_content'];
+                                    
+                            ?>
+            
+                            <!--  Blog Post -->
+                            <h2>
+                            <a href="post.php?post_id=<?php echo $posts_info['post_id']; ?>"><?php echo $posts_info['post_title']; ?></a>
+                            </h2>
+                            <p class="lead">
+                                by <a href="author_posts.php?post_author=<?php echo $posts_info['post_author']; ?>"><?php echo $posts_info['post_author']; ?></a>
+                            </p>
+                            <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo $posts_info['post_date']; ?></p>
+                            <hr>
+                            <img class="img-responsive" src="images/<?php echo $posts_info['post_image']; ?>" alt="">
+                            <hr>
+                            <p><?php echo $posts_info['post_content']; ?></p>
+                            <a class="btn btn-primary" href="post.php?post_id=<?php echo $posts_info['post_id']; ?>">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
+            
+                            <hr>
+            
+                        <?php   }
+            
                         }
     
                     }

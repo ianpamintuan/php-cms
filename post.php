@@ -21,8 +21,9 @@
                     $posts_info = array();
                     
                     $query = "SELECT * FROM tblposts JOIN tblusers ON tblusers.user_id = tblposts.post_author WHERE post_id = {$post_id}";
-                    
                     $result = mysqli_query($connection, $query);
+
+                    checkQuery($result);
 
                     if($post_id == NULL || !is_numeric($post_id) || mysqli_num_rows($result) == NULL) {
 
@@ -31,16 +32,14 @@
 
                     }
                     
-                    if($result) {
-                    
-                        while($row = mysqli_fetch_assoc($result)) {
+                    while($row = mysqli_fetch_assoc($result)) {
 
-                            $posts_info['post_id'] = $row['post_id'];
-                            $posts_info['post_title'] = $row['post_title'];
-                            $posts_info['post_author'] = $row['username'];
-                            $posts_info['post_date'] = $row['post_date'];
-                            $posts_info['post_image'] = $row['post_image'];
-                            $posts_info['post_content'] = $row['post_content'];
+                        $posts_info['post_id'] = $row['post_id'];
+                        $posts_info['post_title'] = $row['post_title'];
+                        $posts_info['post_author'] = $row['username'];
+                        $posts_info['post_date'] = $row['post_date'];
+                        $posts_info['post_image'] = $row['post_image'];
+                        $posts_info['post_content'] = $row['post_content'];
                             
                 ?>
 
@@ -65,11 +64,7 @@
 
                 <hr>
 
-                <?php   }
-                    
-                    }
-
-                ?>
+                <?php   }   ?>
 
                 <!-- Blog Comments -->
 
@@ -88,18 +83,17 @@
                             $query = "INSERT INTO tblcomments(comment_author, comment_email, comment_content, comment_status, comment_date, post_id) VALUES('{$comment_author}', '{$comment_email}', '{$comment_content}', 'Unapproved', now(), {$post_id})";
                             $result = mysqli_query($connection, $query);
 
-                            if(!$result) {
-                                die("SQL Error " . mysqli_error($connection));
-                            } else {
-                                echo "<div class='alert alert-success alert-dismissible' role='alert'>
-                                    <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
-                                    Thanks for commenting. Your comment is now submitted for review. </div>";
-                            }
+                            checkQuery($result);
+
+                            echo "<div class='alert alert-success alert-dismissible' role='alert'>
+                            <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
+                            Thanks for commenting. Your comment is now submitted for review. </div>";
+
                         } else {
 
                             echo "<div class='alert alert-danger alert-dismissible' role='alert'>
-                                    <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
-                                    Please complete all the fields required. </div>";
+                            <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
+                            Please complete all the fields required. </div>";
 
                         }
 
@@ -133,15 +127,15 @@
                     $comments_query = "SELECT * FROM tblcomments WHERE post_id = {$post_id} AND comment_status = 'Approved' ORDER BY comment_id DESC";
                     $comments_result = mysqli_query($connection, $comments_query);
 
-                    if($comments_result) {
+                    checkQuery($comments_result);
 
-                        while($row = mysqli_fetch_assoc($comments_result)) {
+                    while($row = mysqli_fetch_assoc($comments_result)) {
 
-                            $comment_author = $row['comment_author'];
-                            $comment_content = $row['comment_content'];
-                            $comment_date = $row['comment_date'];
-                        
-                        ?>
+                        $comment_author = $row['comment_author'];
+                        $comment_content = $row['comment_content'];
+                        $comment_date = $row['comment_date'];
+                    
+                ?>
 
                         <div class="media">
                             <a class="pull-left" href="#">
@@ -155,14 +149,7 @@
                             </div>
                         </div>
 
-                        <?php
-                        }
-
-                    } else {
-                        die('Query failed ' . mysqli_error($connection));
-                    }
-
-                ?>
+                <?php   }   ?>
                 
                 <!-- Pager -->
                 <ul class="pager">
@@ -181,9 +168,7 @@
                 $views_query = "UPDATE tblposts SET post_views_count = post_views_count + 1 WHERE post_id = {$post_id}";
                 $views_result = mysqli_query($connection, $views_query);
 
-                if(!$views_result) {
-                    die("SQL Error on Views " . mysqli_error($connection));
-                }
+                checkQuery($views_result);
                     
             ?>
 

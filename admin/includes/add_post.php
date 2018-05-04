@@ -24,16 +24,14 @@
 
         $result = mysqli_query($connection, $query);
 
+        checkQuery($result);
+
         $post_id = mysqli_insert_id($connection);
 
-        if(!$result) {
-            die("SQL error " . mysqli_error($connection));
-        } else {
-            echo "<div class='alert alert-success alert-dismissible' role='alert'>
-            <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
-            Post added successfully. <a href='../post.php?post_id={$post_id}'>View Post</a></div>";
-        }
-
+        echo "<div class='alert alert-success alert-dismissible' role='alert'>
+        <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
+        Post added successfully. <a href='../post.php?post_id={$post_id}'>View Post</a></div>";
+        
     }
 
 ?>

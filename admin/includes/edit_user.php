@@ -51,16 +51,13 @@
 
         $query = "UPDATE tblusers SET firstname = '{$user_firstname}', lastname = '{$user_lastname}', user_role = '{$user_role}', email = '{$user_email}', username = '{$user_username}', password = '{$hashed_password}' ";
         $query .= "WHERE user_id = $user_id";
-
         $result = mysqli_query($connection, $query);
 
-        if(!$result) {
-            die("SQL error " . mysqli_error($connection));
-        } else {
-            echo "<div class='alert alert-success alert-dismissible' role='alert'>
-            <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
-            User updated successfully. <a href='users.php'>Back to Users</a></div>";
-        }
+        checkQuery($result);
+
+        echo "<div class='alert alert-success alert-dismissible' role='alert'>
+        <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
+        User updated successfully. <a href='users.php'>Back to Users</a></div>";
 
     }
 

@@ -22,6 +22,8 @@
                     $category_query = "SELECT category_title FROM tblcategories WHERE category_id = {$category_id}";
                     $category_result = mysqli_query($connection, $category_query);
 
+                    checkQuery($category_result);
+
                     while($row = mysqli_fetch_assoc($category_result)) {
                         $category = $row['category_title'];
                     } ?>
@@ -41,19 +43,18 @@
                     $posts_info = array();
                     
                     $query = "SELECT * FROM tblposts JOIN tblusers ON tblusers.user_id = tblposts.post_author WHERE category_id = {$category_id} AND post_status = 'Published' ORDER BY post_id DESC";
-                    
                     $result = mysqli_query($connection, $query);
-                    
-                    if($result) {
-                    
-                        while($row = mysqli_fetch_assoc($result)) {
 
-                            $posts_info['post_id'] = $row['post_id'];
-                            $posts_info['post_title'] = $row['post_title'];
-                            $posts_info['post_author'] = $row['username'];
-                            $posts_info['post_date'] = $row['post_date'];
-                            $posts_info['post_image'] = $row['post_image'];
-                            $posts_info['post_content'] = substr($row['post_content'], 0, 250);
+                    checkQuery($result);
+                    
+                    while($row = mysqli_fetch_assoc($result)) {
+
+                        $posts_info['post_id'] = $row['post_id'];
+                        $posts_info['post_title'] = $row['post_title'];
+                        $posts_info['post_author'] = $row['username'];
+                        $posts_info['post_date'] = $row['post_date'];
+                        $posts_info['post_image'] = $row['post_image'];
+                        $posts_info['post_content'] = substr($row['post_content'], 0, 250);
                             
                 ?>
 
@@ -73,7 +74,7 @@
 
                 <hr>
 
-                <?php   }
+                <?php
                     
                     }
 

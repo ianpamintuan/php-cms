@@ -2,8 +2,6 @@
     
     <?php require_once('includes/nav.php'); ?>
 
-    <?php session_start(); ?>
-
     <!-- Page Content -->
     <div class="container">
 

@@ -13,17 +13,33 @@
 
         $hashed_password = password_hash($user_password, PASSWORD_DEFAULT);
 
-        $query = "INSERT INTO tblusers(firstname, lastname, user_role, email, username, password) ";
-        $query .= "VALUES('{$user_firstname}', '{$user_lastname}', '{$user_role}', '{$user_email}', '{$user_username}', '{$hashed_password}')";
+        if(userDetailDuplicate("username", $username)) {
 
-        $result = mysqli_query($connection, $query);
+            echo "<div class='alert alert-danger alert-dismissible' role='alert'>
+            <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
+            Username already exists.</div>";
 
-        if(!$result) {
-            die("SQL error " . mysqli_error($connection));
+        } else if(userDetailDuplicate("email", $email)) {
+
+            echo "<div class='alert alert-danger alert-dismissible' role='alert'>
+            <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
+            Email already exists.</div>";
+
         } else {
+
+            register($user_firstname, $user_lastname, $user_email, $user_username, $hashed_password, $user_role);
+
+            $user_firstname = "";
+            $user_lastname = "";
+            $user_role = "";
+            $user_email = "";
+            $user_username = "";
+            $user_password = "";
+
             echo "<div class='alert alert-success alert-dismissible' role='alert'>
             <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
             User added successfully. <a href='users.php'>Back to Users</a></div>";
+
         }
 
     }

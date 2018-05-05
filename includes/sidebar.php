@@ -16,6 +16,20 @@
 
                         } else {
 
+                            if(isset($_GET['login'])) {
+
+                                $message = $_GET['login'];
+
+                                if($message == 'error') {
+
+                                    echo "<div class='alert alert-danger alert-dismissible' role='alert'>
+                                    <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
+                                    Incorrect username or password.</div>";
+
+                                }
+              
+                            }
+
                     ?>
 
                         <h4>Login Form</h4>

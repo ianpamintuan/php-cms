@@ -13,6 +13,11 @@
                     <div class="col-xs-6 col-xs-offset-3">
                         
                         <?php
+
+                            if(isset($_SESSION['user_role'])) {
+                                header("Location: index.php");
+                                exit();
+                            }
                         
                             if(isset($_POST['submit'])) {
 

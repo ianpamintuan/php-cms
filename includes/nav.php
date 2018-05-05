@@ -29,6 +29,12 @@
 
                         foreach($pages as $page => $url) {
 
+                            if(isset($_SESSION['user_role'])) {
+                                if($page == 'Registration') {
+                                    continue;
+                                }
+                            }
+
                             if($url == $page_name) {
                                 echo "<li class='active'><a href='/php-cms/{$url}'>{$page}</a></li>";
                             } else {

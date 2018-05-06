@@ -21,6 +21,8 @@
                         
                             if(isset($_POST['submit'])) {
 
+                                $user_info = array();
+
                                 $user_info['first_name'] = $_POST['first-name'];
                                 $user_info['last_name'] = $_POST['last-name'];
                                 $user_info['email'] = $_POST['email'];
@@ -50,8 +52,8 @@
 
                                 } else {
 
-                                    foreach($user_info as $info) {
-                                        $info = clean($info);
+                                    foreach($user_info as $key => $value) {
+                                        $user_info[$key] = clean($value);
                                     }
 
                                     $hashed_password = password_hash($user_info['password'], PASSWORD_DEFAULT);
@@ -61,6 +63,8 @@
                                     echo "<div class='alert alert-success alert-dismissible' role='alert'>
                                     <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
                                     Your registration has been submitted. <a href='index.php#login_form'>Login</a></div>";
+
+                                    unset($user_info);
 
                                 }
 

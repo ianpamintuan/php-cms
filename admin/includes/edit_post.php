@@ -7,31 +7,27 @@
         $query = "SELECT * FROM tblposts WHERE post_id={$post_id}";
         $result = mysqli_query($connection, $query);
 
+        checkQuery($result);
+
         if(!is_numeric($post_id) || mysqli_num_rows($result) == NULL) {
             header("Location: posts.php");
             exit();
         }
 
-        if(!$result) {
-            die("SQL Error " . mysqli_error());
-        } else {
-
-            while($row = mysqli_fetch_assoc($result)) {
-                
-                $post_id = $row['post_id'];
-                $post_title = $row['post_title'];
-                $post_content = $row['post_content'];
-                $post_author = $row['post_author'];
-                $category_id = $row['category_id'];
-                $post_status = $row['post_status'];
-                $post_image = $row['post_image'];
-                $post_tags = $row['post_tags'];
-                $post_comment_count = $row['post_comment_count'];
-                $post_views_count = $row['post_views_count'];
-                $post_date = $row['post_date'];
+        while($row = mysqli_fetch_assoc($result)) {
             
-            }
-
+            $post_id = $row['post_id'];
+            $post_title = $row['post_title'];
+            $post_content = $row['post_content'];
+            $post_author = $row['post_author'];
+            $category_id = $row['category_id'];
+            $post_status = $row['post_status'];
+            $post_image = $row['post_image'];
+            $post_tags = $row['post_tags'];
+            $post_comment_count = $row['post_comment_count'];
+            $post_views_count = $row['post_views_count'];
+            $post_date = $row['post_date'];
+        
         }
 
     } else {

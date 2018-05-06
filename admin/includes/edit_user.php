@@ -9,25 +9,21 @@
         $query = "SELECT * FROM tblusers WHERE user_id = {$user_id}";
         $result = mysqli_query($connection, $query);
 
+        checkQuery($result);
+
         if(!is_numeric($user_id) || mysqli_num_rows($result) == NULL) {
             header("Location: users.php");
             exit();
         }
 
-        if(!$result) {
-            die("SQL error " . mysqli_error($connection));
-        } else {
+        while($row = mysqli_fetch_assoc($result)) {
 
-            while($row = mysqli_fetch_assoc($result)) {
-
-                $user_firstname = $row['firstname'];
-                $user_lastname = $row['lastname'];
-                $user_role = $row['user_role'];
-                $user_email = $row['email'];
-                $user_username = $row['username'];
-                $user_password = $row['password'];
-
-            }            
+            $user_firstname = $row['firstname'];
+            $user_lastname = $row['lastname'];
+            $user_role = $row['user_role'];
+            $user_email = $row['email'];
+            $user_username = $row['username'];
+            $user_password = $row['password'];
 
         }
 

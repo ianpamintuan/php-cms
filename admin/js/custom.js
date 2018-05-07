@@ -117,6 +117,33 @@ $(document).ready(function(){
  
     });
 
+    $('.delete_comment').on('click', function (e) {
+        
+        e.preventDefault();
+        
+        var comment_id = $(this).data('id');
+
+        alertify.confirm("Confirm", "Do you want to delete this comment?",
+        function(){
+
+            $.ajax({
+                type : 'post',
+                url : 'includes/delete_comment.php',
+                data :  'comment_id='+ comment_id,
+                success : function(data){
+                   location.reload();
+                },
+                error: function(){
+                    alert("Error");
+                }
+            });
+ 
+        },
+        function(){
+        }).set('labels', {ok:'Yes', cancel:'No'});
+ 
+    });
+
     $(document).on('click', '#reset_views' ,function(e) {
 
         var id = $(this).data("id");

@@ -313,48 +313,15 @@
                 
                 echo "<td><a href='comments.php?approve=1&comment_id={$comment_id}'>Approve</td>";
                 echo "<td><a href='comments.php?approve=0&comment_id={$comment_id}'>Unapprove</td>";
-                echo "<td><a href='comments.php?delete={$comment_id}'>Delete</td>";
+                ?>
+
+                <td><input class="delete_comment btn btn-danger" type="submit" name="delete" value="Delete" data-id="<?php echo $comment_id; ?>"></td>
+
+                <?php
 
             }
 
             echo "</tr>";
-        }
-
-    }
-
-    function deleteComment() {
-
-        global $connection;
-
-        if(isset($_GET['delete'])) {
-            
-            $comment_id = clean($_GET['delete']);
-
-            if(!is_numeric($comment_id)) {
-                header("Location: comments.php");
-                exit();
-            }
-
-            $query = "DELETE FROM tblcomments WHERE comment_id={$comment_id}";
-            $result = mysqli_query($connection, $query);
-            
-            checkQuery($result);
-
-            if(isset($_GET['post_id'])) {
-
-                $post_id = $_GET['post_id'];
-                $post_id = mysqli_real_escape_string($connection, $post_id);
-
-                header("Location: comments.php?post_id={$post_id}");
-                exit();
-
-            } else {
-
-                header("Location: comments.php");
-                exit();
-
-            }
-
         }
 
     }

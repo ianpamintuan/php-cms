@@ -15,7 +15,6 @@
     </thead>
     <tbody>
         <?php displayCommentsTable(); ?>
-        <?php deleteComment(); ?>
         <?php approveComment(); ?>
     </tbody>
 </table>

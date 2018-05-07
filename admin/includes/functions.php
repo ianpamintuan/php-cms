@@ -98,13 +98,20 @@
         if($type == "table") {
 
             while($row = mysqli_fetch_assoc($result)) {
+
                 $category_id = $row['category_id'];
                 $category_title = $row['category_title'];
+
                 echo "<tr>";
                 echo "<td>{$category_id}</td>";
                 echo "<td>{$category_title}</td>";
-                echo "<td><a href='#editModal' data-toggle='modal' data-id='{$category_id}' class='category_row'>Edit</a></td>";
-                echo "<td><a href='categories.php?delete={$category_id}'>Delete</a></td>";
+                echo "<td><a href='#editModal' data-toggle='modal' data-id='{$category_id}' class='category_row btn btn-info'>Edit</a></td>";
+                ?>
+
+                <td><input class="delete_category btn btn-danger" type="submit" name="delete" value="Delete" data-id="<?php echo $category_id; ?>"></td>
+
+                <?php
+ 
                 echo "</tr>";
             }      
 
@@ -156,29 +163,6 @@
 
             }
 
-        }
-
-    }
-
-    function deleteCategory() {
-
-        if (isset($_GET['delete'])) {
-            
-            global $connection;
-
-            $cat_id = clean($_GET['delete']);
-            
-            $query = "DELETE FROM tblcategories WHERE category_id={$cat_id}";
-            $result = mysqli_query($connection, $query);
-            
-            checkQuery($result);
-            
-            echo "<div class='alert alert-success alert-dismissible' role='alert'>
-            <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
-            Category successully deleted.</div>";
-
-            header("Location: categories.php");
-            
         }
 
     }

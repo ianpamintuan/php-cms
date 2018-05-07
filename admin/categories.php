@@ -45,8 +45,6 @@
                                 </thead>
                                 <tbody>
 
-                                    <?php deleteCategory(); ?>
-
                                     <div id="message"></div>
 
                                     <?php displayCategories("table"); ?>

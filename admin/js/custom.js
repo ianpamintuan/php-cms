@@ -90,6 +90,33 @@ $(document).ready(function(){
  
     });
 
+    $('.delete_category').on('click', function (e) {
+        
+        e.preventDefault();
+        
+        var category_id = $(this).data('id');
+
+        alertify.confirm("Confirm", "Do you want to delete this category?",
+        function(){
+
+            $.ajax({
+                type : 'post',
+                url : 'includes/delete_category.php',
+                data :  'category_id='+ category_id,
+                success : function(data){
+                   location.reload();
+                },
+                error: function(){
+                    alert("Error");
+                }
+            });
+ 
+        },
+        function(){
+        }).set('labels', {ok:'Yes', cancel:'No'});
+ 
+    });
+
     $(document).on('click', '#reset_views' ,function(e) {
 
         var id = $(this).data("id");
@@ -111,8 +138,10 @@ $(document).on('click', '#editSave', function (e) {
         url : 'includes/save.php',
         data :  $('form.editForm').serialize(),
         success : function(data){
-            $('#message').html(data);
+            
             $('#editModal').modal('hide');
+            location.reload();
+            $('#message').html(data);
         },
         error: function(err){
             alert("Error " + err.statusText);

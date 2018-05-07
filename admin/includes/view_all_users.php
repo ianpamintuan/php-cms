@@ -13,7 +13,6 @@
     </thead>
     <tbody>
         <?php displayUsers("table"); ?>
-        <?php deleteUser(); ?>
         <?php changeRole(); ?>
     </tbody>
 </table>

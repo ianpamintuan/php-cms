@@ -452,9 +452,13 @@
 
                 echo "<td><a href='users.php?change_to_admin=1&user_id={$user_id}'>Admin</td>";
                 echo "<td><a href='users.php?change_to_sub=1&user_id={$user_id}'>Subscriber</td>";
-                echo "<td><a href='users.php?src=edit_user&user_id={$user_id}'>Edit</td>";
-                echo "<td><a href='users.php?delete={$user_id}'>Delete</td>";
-    
+                echo "<td><a class='btn btn-info' href='users.php?src=edit_user&user_id={$user_id}'>Edit</td>";
+                ?>
+
+                <td><input class="delete_user btn btn-danger" type="submit" name="delete" value="Delete" data-id="<?php echo $user_id; ?>"></td>
+
+                <?php
+
                 echo "</tr>";
             }
 
@@ -476,41 +480,6 @@
             }
 
             echo "</select>";
-
-        }
-
-    }
-
-    function deleteUser() {
-
-        global $connection;
-
-        if(isset($_GET['delete'])) {
-            
-            if(isset($_SESSION['user_role'])) {
-
-                $user_role = $_SESSION['user_role'];
-
-                if($user_role == "Admin") {
-
-                    $user_id = mysqli_real_escape_string($connection, $_GET['delete']);
-    
-                    if(!is_numeric($user_id)) {
-                        header("Location: users.php");
-                        exit();
-                    }
-
-                    $query = "DELETE FROM tblusers WHERE user_id={$user_id}";
-                    $result = mysqli_query($connection, $query);
-
-                    checkQuery($result);
-
-                    header("Location: users.php");
-                    exit();
-                    
-                }
-
-            }
 
         }
 

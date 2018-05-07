@@ -231,30 +231,15 @@
             echo "<td><a href='comments.php?post_id={$post_id}'>{$comments_count}</a></td>";
             echo "<td><a id='reset_views' href='#' data-id='{$post_id}'>{$post_views_count}</a></td>";
             echo "<td>{$post_date}</td>";
-            echo "<td><a href='posts.php?src=edit_post&edit={$post_id}'>Edit</td>";
-            echo "<td><a id='delete_post' href='#' data-id='{$post_id}'>Delete</td>";
+            echo "<td><a class='btn btn-info' href='posts.php?src=edit_post&edit={$post_id}'>Edit</td>";
+            ?>
+            
+            <td><input class="delete_post btn btn-danger" type="submit" name="delete" value="Delete" data-id="<?php echo $post_id; ?>"></td>
+
+            <?php
+
             echo "</tr>";
         }                
-
-    }
-
-    function deletePost() {
-
-        global $connection;
-
-        if(isset($_GET['delete'])) {
-            
-            $post_id = clean($_GET['delete']);
-
-            $query = "DELETE FROM tblposts WHERE post_id={$post_id}";
-            $result = mysqli_query($connection, $query);
-
-            checkQuery($result);
-
-            header("Location: posts.php?message=delete_success");
-            exit();
-
-        }
 
     }
 

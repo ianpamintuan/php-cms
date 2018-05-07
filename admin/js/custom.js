@@ -19,7 +19,9 @@ $(document).ready(function(){
     });
 
     $('.category_row').on('click', function (e) {
+
         var row_id = $(this).data('id');
+
         $.ajax({
             type : 'post',
             url : 'includes/fetch_record.php', //Here you will fetch records 
@@ -31,19 +33,34 @@ $(document).ready(function(){
                 alert("Error");
             }
         });
+
     });
 
-    $(document).on('click', '#delete_post' ,function(e) {
-
-        var id = $(this).data("id");
+    $('.delete_post').on('click', function (e) {
+        
+        e.preventDefault();
+        
+        var post_id = $(this).data('id');
 
         alertify.confirm("Confirm", "Do you want to delete this post?",
         function(){
-            window.location.href = "posts.php?delete=" + id;
+
+            $.ajax({
+                type : 'post',
+                url : 'includes/delete_post.php',
+                data :  'post_id='+ post_id,
+                success : function(data){
+                   location.reload();
+                },
+                error: function(){
+                    alert("Error");
+                }
+            });
+ 
         },
         function(){
         }).set('labels', {ok:'Yes', cancel:'No'});
-
+ 
     });
 
     $(document).on('click', '#reset_views' ,function(e) {

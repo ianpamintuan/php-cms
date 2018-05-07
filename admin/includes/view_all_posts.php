@@ -76,7 +76,7 @@
 
 ?>
 
-<form action="" method="post">
+<form action="" method="post" id="posts_form">
 
     <div class="row">
         <div id="bulkOptionsContainer" class="col-xs-4">
@@ -145,7 +145,6 @@
         </thead>
         <tbody>
             <?php displayPostsTable(); ?>
-            <?php deletePost(); ?>
             <?php resetViews(); ?>
         </tbody>
     </table>

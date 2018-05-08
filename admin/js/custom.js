@@ -167,8 +167,11 @@ $(document).on('click', '#editSave', function (e) {
         success : function(data){
             
             $('#editModal').modal('hide');
-            location.reload();
-            $('#message').html(data);
+            alertify.success('Category successfully updated');
+            setTimeout(function() {
+                  location.reload();
+            }, 1000);
+            
         },
         error: function(err){
             alert("Error " + err.statusText);

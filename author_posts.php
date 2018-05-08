@@ -58,7 +58,7 @@
 
                 <!--  Blog Post -->
                 <h2>
-                    <a href="post.php?post_id=<?php echo $posts_info['post_id']; ?>"><?php echo $posts_info['post_title']; ?></a>
+                    <a href="/php-cms/post/<?php echo $posts_info['post_id']; ?>"><?php echo $posts_info['post_title']; ?></a>
                     <?php
                         if(isset($_SESSION['user_id'])) { ?>
                             <a href="admin/posts.php?src=edit_post&edit=<?php echo $posts_info['post_id']; ?>" class="pull-right" style="font-size: 16px;">Edit post</a>
@@ -67,11 +67,11 @@
                     ?>
                 </h2>
                 <p class="lead">
-                    by <a href="author_posts.php?post_author=<?php echo $posts_info['post_author']; ?>"><?php echo $posts_info['post_author']; ?></a>
+                    by <a href="/php-cms/author/<?php echo $posts_info['post_author']; ?>"><?php echo $posts_info['post_author']; ?></a>
                 </p>
                 <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo $posts_info['post_date']; ?></p>
                 <hr>
-                <img class="img-responsive" src="images/<?php echo $posts_info['post_image']; ?>" alt="">
+                <img class="img-responsive" src="/php-cms/images/<?php echo $posts_info['post_image']; ?>" alt="">
                 <hr>
                 <p><?php echo $posts_info['post_content']; ?></p>
 

@@ -88,9 +88,9 @@
             $category_title = $row['category_title'];
 
             if(isset($_GET['category']) && $_GET['category'] == $category_id) {
-                echo "<li class='active'><a href='category.php?category={$category_id}'>{$category_title}</a></li>";
+                echo "<li class='active'><a href='/php-cms/category/{$category_id}'>{$category_title}</a></li>";
             } else {
-                echo "<li><a href='category.php?category={$category_id}'>{$category_title}</a></li>";
+                echo "<li><a href='/php-cms/category/{$category_id}'>{$category_title}</a></li>";
             }
 
         }

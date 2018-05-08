@@ -80,7 +80,7 @@
 
                 <!--  Blog Post -->
                 <h2>
-                    <a href="post.php?post_id=<?php echo $posts_info['post_id']; ?>"><?php echo $posts_info['post_title']; ?></a>
+                    <a href="/php-cms/post/<?php echo $posts_info['post_id']; ?>"><?php echo $posts_info['post_title']; ?></a>
                     <?php
                         if(isset($_SESSION['user_id'])) { ?>
                             <a href="admin/posts.php?src=edit_post&edit=<?php echo $posts_info['post_id']; ?>" class="pull-right" style="font-size: 16px;">Edit post</a>
@@ -89,16 +89,16 @@
                     ?>
                 </h2>
                 <p class="lead">
-                    by <a href="author_posts.php?post_author=<?php echo $posts_info['post_author']; ?>"><?php echo $posts_info['post_author']; ?></a>
+                    by <a href="/php-cms/author/<?php echo $posts_info['post_author']; ?>"><?php echo $posts_info['post_author']; ?></a>
                 </p>
                 <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo $posts_info['post_date']; ?></p>
                 <hr>
-                <a href="post.php?post_id=<?php echo $posts_info['post_id']; ?>">
-                    <img class="img-responsive" src="images/<?php echo $posts_info['post_image']; ?>" alt="Post image">
+                <a href="/php-cms/post/<?php echo $posts_info['post_id']; ?>">
+                    <img class="img-responsive" src="/php-cms/images/<?php echo $posts_info['post_image']; ?>" alt="Post image">
                 </a>
                 <hr>
                 <p><?php echo $posts_info['post_content'] . '...'; ?></p>
-                <a class="btn btn-primary" href="post.php?post_id=<?php echo $posts_info['post_id']; ?>">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
+                <a class="btn btn-primary" href="/php-cms/post/<?php echo $posts_info['post_id']; ?>">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
 
                 <hr>
 
@@ -111,11 +111,11 @@
                         for($i = 1; $i <= $pagination; $i++) {
 
                             if($i == 1 && $page == "") {
-                                echo "<li><a class='active' href='index.php?page={$i}'>{$i}</a></li>";
+                                echo "<li><a class='active' href='/php-cms/page/{$i}'>{$i}</a></li>";
                             } elseif($i == $page) {
-                                echo "<li><a class='active' href='index.php?page={$i}'>{$i}</a></li>";
+                                echo "<li><a class='active' href='/php-cms/page/{$i}'>{$i}</a></li>";
                             } else {
-                                echo "<li><a href='index.php?page={$i}'>{$i}</a></li>";
+                                echo "<li><a href='/php-cms/page/{$i}'>{$i}</a></li>";
                             }
                             
                         }

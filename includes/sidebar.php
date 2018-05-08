@@ -11,7 +11,7 @@
 
                     ?>
                         <h3>Logged in as <span class="label label-primary"><?php echo $_SESSION['username']; ?></span></h3>
-                        <a href="includes/logout.php" class="btn btn-danger">Logout</a>
+                        <a href="/php-cms/includes/logout.php" class="btn btn-danger">Logout</a>
                     <?php
 
                         } else {
@@ -33,7 +33,7 @@
                     ?>
 
                         <h4>Login Form</h4>
-                        <form action="includes/login.php" method="POST">
+                        <form action="/php-cms/includes/login.php" method="POST">
                             <div class="form-group">
                                 <input type="text" class="form-control" id="username" name="username" placeholder="Username">
                             </div>
@@ -45,7 +45,7 @@
                                 Login
                             </button>
 
-                            <a href="registration.php" class="btn btn-default">Register</a>
+                            <a href="/php-cms/registration" class="btn btn-default">Register</a>
                             
                         </form>
                         <!-- /.input-group -->
@@ -60,7 +60,7 @@
                 <!-- Blog Search Well -->
                 <div class="well">
                     <h4>Blog Search</h4>
-                    <form action="search.php">
+                    <form action="/php-cms/search.php">
                         <div class="input-group">
                             <input type="text" class="form-control" name="search">
                             <span class="input-group-btn">

@@ -38,19 +38,30 @@
 
                     }
 
-                    $posts_query_count = "SELECT * FROM tblposts WHERE post_status = 'Published'";
-                    $posts_count_result = mysqli_query($connection, $posts_query_count);
+                    $post_status = "Published";
+
+                    $posts_count_stmt = mysqli_prepare($connection, "SELECT * FROM tblposts WHERE post_status = ?");
+                    
+                    mysqli_stmt_bind_param($posts_count_stmt, "s", $post_status);
+                    mysqli_stmt_execute($posts_count_stmt);
+                    $posts_count_result = mysqli_stmt_get_result($posts_count_stmt);
+
+                    checkPreparedStatement($posts_count_stmt);
+
                     $posts_count = mysqli_num_rows($posts_count_result);
 
                     $pagination = ceil($posts_count / $posts_per_page);
                     
                     $posts_info = array();
-                    
-                    $query = "SELECT * FROM tblposts JOIN tblusers ON tblusers.user_id = tblposts.post_author WHERE post_status = 'Published' LIMIT {$offset}, {$posts_per_page}";
-                    $result = mysqli_query($connection, $query);
 
-                    checkQuery($result);
-                    
+                    $posts_stmt = mysqli_prepare($connection, "SELECT * FROM tblposts JOIN tblusers ON tblusers.user_id = tblposts.post_author WHERE post_status = ? ORDER BY post_id DESC LIMIT ?, ?");
+
+                    checkPreparedStatement($posts_stmt);
+
+                    mysqli_stmt_bind_param($posts_stmt, "sii", $post_status, $offset, $posts_per_page);
+                    mysqli_stmt_execute($posts_stmt);
+                    $result = mysqli_stmt_get_result($posts_stmt);
+
                     //add code on counting the result query
                     if(empty($result) || mysqli_num_rows($result) < 1) {
                         echo "<h1 class='page-header'>No published blog posts found.</h1>";

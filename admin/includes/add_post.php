@@ -18,16 +18,15 @@
 
         move_uploaded_file($post_info['image_temp'], "../images/{$post_info['image']}");
 
-        foreach($post_info as $key => $value) {
-            $post_info[$key] = clean($value);
-        }
+        date_default_timezone_set("Asia/Taipei");
+        $post_date = date("Y-m-d");
 
-        $query = "INSERT INTO tblposts(post_title, post_author, category_id, post_date, post_image, post_content, post_tags, post_status) ";
-        $query .= "VALUES('" . $post_info['title'] . "', '" . $post_info['author'] . "', " . $post_info['category_id'] . ", now(), '" . $post_info['image'] . "', '" . $post_info['content'] . "', '" . $post_info['tags'] . "', '" . $post_info['status'] . "')";
+        $post_stmt = mysqli_prepare($connection, "INSERT INTO tblposts(post_title, post_author, post_date, category_id, post_image, post_content, post_tags, post_status) VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
 
-        $result = mysqli_query($connection, $query);
+        checkPreparedStatement($post_stmt);
 
-        checkQuery($result);
+        mysqli_stmt_bind_param($post_stmt, "sssissss", $post_info['title'], $post_info['author'], $post_date, $post_info['category_id'], $post_info['image'], $post_info['content'], $post_info['tags'], $post_info['status']);
+        mysqli_stmt_execute($post_stmt);
 
         $post_id = mysqli_insert_id($connection);
 

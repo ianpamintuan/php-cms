@@ -17,11 +17,14 @@
                     }
 
                     $posts_info = array();
-                    
-                    $query = "SELECT * FROM tblposts JOIN tblusers ON tblusers.user_id = tblposts.post_author WHERE post_id = {$post_id}";
-                    $result = mysqli_query($connection, $query);
 
-                    checkQuery($result);
+                    $post_stmt = mysqli_prepare($connection, "SELECT * FROM tblposts JOIN tblusers ON tblusers.user_id = tblposts.post_author WHERE post_id = ?");
+                    
+                    checkPreparedStatement($post_stmt);
+
+                    mysqli_stmt_bind_param($post_stmt, "i", $post_id);
+                    mysqli_stmt_execute($post_stmt);
+                    $result = mysqli_stmt_get_result($post_stmt);
 
                     if($post_id == NULL || !is_numeric($post_id) || mysqli_num_rows($result) == NULL) {
 
@@ -78,10 +81,15 @@
 
                         if(!empty($comment_author) && !empty($comment_content) && !empty($comment_email)) {
 
-                            $query = "INSERT INTO tblcomments(comment_author, comment_email, comment_content, comment_status, comment_date, post_id) VALUES('{$comment_author}', '{$comment_email}', '{$comment_content}', 'Unapproved', now(), {$post_id})";
-                            $result = mysqli_query($connection, $query);
+                            date_default_timezone_set("Asia/Taipei");
+                            $comment_date = date("Y-m-d");
 
-                            checkQuery($result);
+                            $comment_stmt = mysqli_prepare($connection, "INSERT INTO tblcomments(comment_author, comment_email, comment_content, comment_date, post_id) VALUES(?, ?, ?, ?, ?)");
+                            
+                            checkPreparedStatement($comment_stmt);
+                            
+                            mysqli_stmt_bind_param($comment_stmt, "ssssi", $comment_author, $comment_email, $comment_content, $comment_date, $post_id);
+                            mysqli_stmt_execute($comment_stmt);
 
                             echo "<div class='alert alert-success alert-dismissible' role='alert'>
                             <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
@@ -122,10 +130,15 @@
 
                 <?php
 
-                    $comments_query = "SELECT * FROM tblcomments WHERE post_id = {$post_id} AND comment_status = 'Approved' ORDER BY comment_id DESC";
-                    $comments_result = mysqli_query($connection, $comments_query);
+                    $comment_status = "Approved";
 
-                    checkQuery($comments_result);
+                    $comments_stmt = mysqli_prepare($connection, "SELECT * FROM tblcomments WHERE post_id = ? AND comment_status = ? ORDER BY comment_id DESC");
+                    
+                    checkPreparedStatement($comments_stmt);
+
+                    mysqli_stmt_bind_param($comments_stmt, "is", $post_id, $comment_status);
+                    mysqli_stmt_execute($comments_stmt);
+                    $comments_result = mysqli_stmt_get_result($comments_stmt);
 
                     while($row = mysqli_fetch_assoc($comments_result)) {
 
@@ -162,12 +175,14 @@
             </div>
 
             <?php
-            
-                $views_query = "UPDATE tblposts SET post_views_count = post_views_count + 1 WHERE post_id = {$post_id}";
-                $views_result = mysqli_query($connection, $views_query);
 
-                checkQuery($views_result);
-                    
+                $views_stmt = mysqli_prepare($connection, "UPDATE tblposts SET post_views_count = post_views_count + 1 WHERE post_id = ?");
+                
+                checkPreparedStatement($views_stmt);
+                
+                mysqli_stmt_bind_param($views_stmt, "i", $post_id);
+                mysqli_stmt_execute($views_stmt);
+
             ?>
 
             <!-- Blog Sidebar Widgets Column -->

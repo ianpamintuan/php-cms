@@ -11,15 +11,16 @@
         $cat_title = htmlspecialchars($cat_title);
         $cat_title = mysqli_real_escape_string($connection, $cat_title);
 
-        $query = "UPDATE tblcategories SET category_title='{$cat_title}' WHERE category_id=$id;";
-        $result = mysqli_query($connection, $query);
+        $category_stmt = mysqli_prepare($connection, "UPDATE tblcategories SET category_title = ? WHERE category_id = ?");
 
-        checkQuery($result);
+        checkPreparedStatement($category_stmt);
+
+        mysqli_stmt_bind_param($category_stmt, "si", $cat_title, $id);
+        mysqli_stmt_execute($category_stmt);
 
         echo "<div class='alert alert-success alert-dismissible' role='alert'>
         <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
         Category successully updated.</div>";
-
 
     }
 

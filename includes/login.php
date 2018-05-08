@@ -9,10 +9,13 @@
         $username = clean($_POST['username']);
         $password = clean($_POST['password']);
 
-        $query = "SELECT * FROM tblusers WHERE BINARY username = '{$username}'";
-        $result = mysqli_query($connection, $query);
+        $login_stmt = mysqli_prepare($connection, "SELECT * FROM tblusers WHERE BINARY username = ?");
 
-        checkQuery($result);
+        checkPreparedStatement($login_stmt);
+
+        mysqli_stmt_bind_param($login_stmt, "s", $username);
+        mysqli_stmt_execute($login_stmt);
+        $result = mysqli_stmt_get_result($login_stmt);
 
         if(mysqli_num_rows($result) > 0) {
 

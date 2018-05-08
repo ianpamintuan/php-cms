@@ -7,10 +7,12 @@
 
         $id = clean($_POST['user_id']);
 
-        $query = "DELETE FROM tblusers WHERE user_id = $id";
-        $result = mysqli_query($connection, $query);
+        $user_stmt = mysqli_prepare($connection, "DELETE FROM tblusers WHERE user_id = ?");
 
-        checkQuery($result);
+        checkPreparedStatement($user_stmt);
+
+        mysqli_stmt_bind_param($user_stmt, "i", $id);
+        mysqli_stmt_execute($user_stmt);
 
     }
 

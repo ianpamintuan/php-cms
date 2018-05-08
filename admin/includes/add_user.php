@@ -36,10 +36,6 @@
 
         } else {
 
-            foreach($user_info as $key => $value) {
-                $user_info[$key] = clean($value);
-            }
-
             $hashed_password = password_hash($user_info['password'], PASSWORD_DEFAULT);
 
             register($user_info['first_name'], $user_info['last_name'], $user_info['email'], $user_info['username'], $hashed_password, $user_info['user_role']);

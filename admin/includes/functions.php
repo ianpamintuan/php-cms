@@ -17,6 +17,16 @@
 
     }
 
+    function checkPreparedStatement($stmt) {
+
+        global $connection;
+
+        if(!$stmt) {
+            die('SQL Error ' . mysqli_error($connection));
+        }
+
+    }
+
     function countOnlineUsers() {
 
         if(isset($_GET['online_users'])) {
@@ -65,11 +75,12 @@
         
         global $connection;
 
-        $query = "SELECT * FROM tblcategories;";
+        $categories_stmt = mysqli_prepare($connection, "SELECT * FROM tblcategories");
         
-        $result = mysqli_query($connection, $query);
+        checkPreparedStatement($categories_stmt);
 
-        checkQuery($result);
+        mysqli_stmt_execute($categories_stmt);
+        $result = mysqli_stmt_get_result($categories_stmt);
 
         while($row = mysqli_fetch_assoc($result)) {
 
@@ -90,10 +101,12 @@
 
         global $connection;
 
-        $query = "SELECT * FROM tblcategories;";
-        $result = mysqli_query($connection, $query);
+        $categories_stmt = mysqli_prepare($connection, "SELECT * FROM tblcategories");
+        
+        checkPreparedStatement($categories_stmt);
 
-        checkQuery($result);
+        mysqli_stmt_execute($categories_stmt);
+        $result = mysqli_stmt_get_result($categories_stmt);
 
         if($type == "table") {
 
@@ -151,15 +164,20 @@
             } else {
 
                 global $connection;
-                                        
-                $query = "INSERT INTO tblcategories(category_title) VALUES('" . $cat_name . "');";
-                $result = mysqli_query($connection, $query);
-                
-                checkQuery($result);
-                                
+
+                $category_stmt = mysqli_prepare($connection, "INSERT INTO tblcategories(category_title) VALUES(?)");
+
+                checkPreparedStatement($category_stmt);
+
+                mysqli_stmt_bind_param($category_stmt, "s", $cat_name);
+                mysqli_stmt_execute($category_stmt);
+                              
                 echo "<div class='alert alert-success alert-dismissible' role='alert'>
                 <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
                 Category successully added.</div>";
+
+                header("Location: categories.php");
+                exit();
 
             }
 
@@ -170,12 +188,14 @@
     function displayPostsTable() {
         
         global $connection;
-        
-        $query = "SELECT * FROM tblposts JOIN tblusers ON tblusers.user_id = tblposts.post_author JOIN tblcategories ON tblcategories.category_id = tblposts.category_id ORDER BY post_id DESC;";
-        $result = mysqli_query($connection, $query);
 
-        checkQuery($result);
+        $posts_stmt = mysqli_prepare($connection, "SELECT * FROM tblposts JOIN tblusers ON tblusers.user_id = tblposts.post_author JOIN tblcategories ON tblcategories.category_id = tblposts.category_id ORDER BY post_id DESC");
         
+        checkPreparedStatement($posts_stmt);
+
+        mysqli_stmt_execute($posts_stmt);
+        $result = mysqli_stmt_get_result($posts_stmt);
+
         while($row = mysqli_fetch_assoc($result)) {
             
             $post_id = $row['post_id'];
@@ -191,16 +211,22 @@
             $post_date = $row['post_date'];
             $category_title = $row['category_title'];
 
-            $count_query = "SELECT post_id AS comments_count FROM tblcomments WHERE post_id = {$post_id}";
-            $count_result = mysqli_query($connection, $count_query);
+            $comments_count_stmt = mysqli_prepare($connection,"SELECT post_id AS comments_count FROM tblcomments WHERE post_id = ?");
 
-            if(!$count_result) {
-                die("SQL Error " . mysqli_error($connection));
-            } else {
-                $comments_count = mysqli_num_rows($count_result);
-                $count_update_query = "UPDATE tblposts SET post_comment_count = {$comments_count} WHERE post_id = {$post_id}";
-                $count_update_result = mysqli_query($connection, $count_update_query);     
-            }
+            checkPreparedStatement($comments_count_stmt);
+
+            mysqli_stmt_bind_param($comments_count_stmt, "i", $post_id);
+            mysqli_stmt_execute($comments_count_stmt);
+            $count_result = mysqli_stmt_get_result($comments_count_stmt);
+
+            $comments_count = mysqli_num_rows($count_result);
+
+            $comments_update_stmt = mysqli_prepare($connection, "UPDATE tblposts SET post_comment_count = ? WHERE post_id = ?");
+
+            checkPreparedStatement($comments_update_stmt);
+
+            mysqli_stmt_bind_param($comments_update_stmt, "ii", $comments_count, $post_id);
+            mysqli_stmt_execute($comments_update_stmt);
 
             echo "<tr>";
             echo "<td><input type='checkbox' name='checkboxArray[]' class='checkbox' value='{$post_id}'></td>";
@@ -235,10 +261,12 @@
 
             $post_id = clean($_GET['reset_views']);
 
-            $query = "UPDATE tblposts SET post_views_count = 0 WHERE post_id={$post_id}";
-            $result = mysqli_query($connection, $query);
+            $reset_views_stmt = mysqli_prepare($connection, "UPDATE tblposts SET post_views_count = 0 WHERE post_id = ?");
 
-            checkQuery($result);
+            checkPreparedStatement($reset_views_stmt);
+
+            mysqli_stmt_bind_param($reset_views_stmt, "i", $post_id);
+            mysqli_stmt_execute($reset_views_stmt);
 
             header("Location: posts.php?message=reset_view_success");
             exit();
@@ -260,17 +288,20 @@
                 exit();
             }
 
-            $query = "SELECT * FROM tblcomments WHERE post_id = {$post_id}";
+            $comments_stmt = mysqli_prepare($connection, "SELECT * FROM tblcomments WHERE post_id = ?");
+
+            mysqli_stmt_bind_param($comments_stmt, "i", $post_id);
 
         } else {
 
-            $query = "SELECT * FROM tblcomments";
+            $comments_stmt = mysqli_prepare($connection, "SELECT * FROM tblcomments");
 
         }
 
-        $result = mysqli_query($connection, $query);
+        checkPreparedStatement($comments_stmt);
 
-        checkQuery($result);
+        mysqli_stmt_execute($comments_stmt);
+        $result = mysqli_stmt_get_result($comments_stmt);
 
         while($row = mysqli_fetch_assoc($result)) {
 
@@ -290,14 +321,18 @@
             echo "<td>{$comment_status}</td>";
             echo "<td>{$comment_date}</td>";
 
-            $posts_query = "SELECT * FROM tblposts WHERE post_id = {$post_id}";
-            $posts_result = mysqli_query($connection, $posts_query);
+            $posts_stmt = mysqli_prepare($connection, "SELECT * FROM tblposts WHERE post_id = ?");
 
-            checkQuery($posts_result);
+            checkPreparedStatement($posts_stmt);
+
+            mysqli_stmt_bind_param($posts_stmt, "i", $post_id);
+            mysqli_stmt_execute($posts_stmt);
+            $posts_result = mysqli_stmt_get_result($posts_stmt);
 
             $post = mysqli_fetch_assoc($posts_result);
             $comment_post_id = $post['post_id'];
             $post_title = $post['post_title'];
+
             echo "<td><a href='../post.php?post_id=" . $comment_post_id . "'>{$post_title}</a></td>";
 
             if(isset($_GET['post_id'])) {
@@ -307,7 +342,12 @@
 
                 echo "<td><a href='comments.php?approve=1&comment_id={$comment_id}&post_id={$post_id}'>Approve</td>";
                 echo "<td><a href='comments.php?approve=0&comment_id={$comment_id}&post_id={$post_id}'>Unapprove</td>";
-                echo "<td><a href='comments.php?delete={$comment_id}&post_id={$post_id}'>Delete</td>";
+                
+                ?>
+
+                <td><input class="delete_comment btn btn-danger" type="submit" name="delete" value="Delete" data-id="<?php echo $comment_id; ?>"></td>
+
+                <?php
 
             } else {
                 
@@ -344,14 +384,17 @@
             }
 
             if($approve == 1) {
-                $query = "UPDATE tblcomments SET comment_status = 'Approved' WHERE comment_id={$comment_id}";
+                $comment_status = "Approved";
             } else {
-                $query = "UPDATE tblcomments SET comment_status = 'Unapproved' WHERE comment_id={$comment_id}";
+                $comment_status = "Unapproved";
             }
 
-            $result = mysqli_query($connection, $query);
+            $approve_stmt = mysqli_prepare($connection, "UPDATE tblcomments SET comment_status = ? WHERE comment_id = ?");
 
-            checkQuery($result);
+            checkPreparedStatement($approve_stmt);
+
+            mysqli_stmt_bind_param($approve_stmt, "si", $comment_status, $comment_id);
+            mysqli_stmt_execute($approve_stmt);
 
             if(isset($_GET['post_id'])) {
 
@@ -375,10 +418,12 @@
 
         global $connection;
 
-        $query = "SELECT * FROM tblusers";
-        $result = mysqli_query($connection, $query);
+        $users_stmt = mysqli_prepare($connection, "SELECT * FROM tblusers");
 
-        checkQuery($result);
+        checkPreparedStatement($users_stmt);
+
+        mysqli_stmt_execute($users_stmt);
+        $result = mysqli_stmt_get_result($users_stmt);
 
         if($type == "table") {
 
@@ -443,10 +488,14 @@
         if(isset($_GET['change_to_admin']) && isset($_GET['user_id'])) {
 
             $user_id = clean($_GET['user_id']);
-            $query = "UPDATE tblusers SET user_role = 'Admin' WHERE user_id={$user_id}";
-            $result = mysqli_query($connection, $query);
+            $user_role = "Admin";
 
-            checkQuery($result);
+            $change_role_stmt = mysqli_prepare($connection, "UPDATE tblusers SET user_role = ? WHERE user_id = ?");
+
+            checkPreparedStatement($change_role_stmt);
+
+            mysqli_stmt_bind_param($change_role_stmt, "si", $user_role, $user_id);
+            mysqli_stmt_execute($change_role_stmt);
 
             header("Location: users.php");
             exit();
@@ -454,10 +503,14 @@
         } else if(isset($_GET['change_to_sub']) && isset($_GET['user_id'])) {
 
             $user_id = clean($_GET['user_id']);
-            $query = "UPDATE tblusers SET user_role = 'Subscriber' WHERE user_id={$user_id}";
-            $result = mysqli_query($connection, $query);
+            $user_role = "Subscriber";
 
-            checkQuery($result);
+            $change_role_stmt = mysqli_prepare($connection, "UPDATE tblusers SET user_role = ? WHERE user_id = ?");
+
+            checkPreparedStatement($change_role_stmt);
+
+            mysqli_stmt_bind_param($change_role_stmt, "si", $user_role, $user_id);
+            mysqli_stmt_execute($change_role_stmt);
             
             header("Location: users.php");
             exit();
@@ -471,14 +524,16 @@
         global $connection;
 
         if(!empty($filter)) {
-            $query = "SELECT * FROM {$table} WHERE {$filter} = '{$value}'";
+            $count_stmt = mysqli_prepare($connection, "SELECT * FROM {$table} WHERE {$filter} = ?");
+            mysqli_stmt_bind_param($count_stmt, "s", $value);
         } else {
-            $query = "SELECT * FROM {$table}";
+            $count_stmt = mysqli_prepare($connection, "SELECT * FROM {$table}");
         }
 
-        $result = mysqli_query($connection, $query);
-        
-        checkQuery($result);
+        checkPreparedStatement($count_stmt);
+
+        mysqli_stmt_execute($count_stmt);
+        $result = mysqli_stmt_get_result($count_stmt);
 
         return mysqli_num_rows($result);
 
@@ -488,10 +543,13 @@
 
         global $connection;
 
-        $query = "SELECT user_role FROM tblusers WHERE BINARY username = '{$username}'";
-        $result = mysqli_query($connection, $query);
+        $role_stmt = mysqli_prepare($connection, "SELECT user_role FROM tblusers WHERE BINARY username = ?");
 
-        checkQuery($result);
+        checkPreparedStatement($role_stmt);
+
+        mysqli_stmt_bind_param($role_stmt, "s", $username);
+        mysqli_stmt_execute($role_stmt);
+        $result = mysqli_stmt_get_result($role_stmt);
             
         $row = mysqli_fetch_array($result);
         $user_role = $row['user_role'];
@@ -508,10 +566,13 @@
         
         global $connection;
 
-        $query = "SELECT * FROM tblusers WHERE {$filter} = '{$value}'";
-        $result = mysqli_query($connection, $query);
+        $duplicate_stmt = mysqli_prepare($connection, "SELECT * FROM tblusers WHERE {$filter} = ?");
 
-        checkQuery($result);
+        checkPreparedStatement($duplicate_stmt);
+
+        mysqli_stmt_bind_param($duplicate_stmt, "s", $value);
+        mysqli_stmt_execute($duplicate_stmt);
+        $result = mysqli_stmt_get_result($duplicate_stmt);
 
         if(mysqli_num_rows($result) > 0) {
             return true;
@@ -525,12 +586,13 @@
 
         global $connection;
 
-        $query = "INSERT INTO tblusers(firstname, lastname, email, username, password, user_role) ";
-        $query .= "VALUES('{$first_name}', '{$last_name}', '{$email}', '{$username}', '{$hashed_password}', '{$role}')";                    
-        $result = mysqli_query($connection, $query);
+        $register_stmt = mysqli_prepare($connection, "INSERT INTO tblusers(firstname, lastname, email, username, password, user_role) VALUES(?, ?, ?, ?, ?, ?)");
 
-        checkQuery($result);
+        checkPreparedStatement($register_stmt);
 
+        mysqli_stmt_bind_param($register_stmt, "ssssss", $first_name, $last_name, $email, $username, $hashed_password, $role);
+        mysqli_stmt_execute($register_stmt);
+        
     }
 
 ?>

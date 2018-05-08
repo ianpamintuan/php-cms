@@ -7,10 +7,13 @@
 
         $id = clean($_POST['row_id']);
 
-        $query = "SELECT * FROM tblcategories WHERE category_id = $id";
-        $result = mysqli_query($connection, $query);
+        $category_stmt = mysqli_prepare($connection, "SELECT * FROM tblcategories WHERE category_id = ?");
 
-        checkQuery($result); 
+        checkPreparedStatement($category_stmt);
+
+        mysqli_stmt_bind_param($category_stmt, "i", $id);
+        mysqli_stmt_execute($category_stmt);
+        $result = mysqli_stmt_get_result($category_stmt);
 
         while($row = mysqli_fetch_assoc($result)) {
 

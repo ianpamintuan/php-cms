@@ -19,18 +19,24 @@
                         exit();
                     }
 
-                    $category_query = "SELECT category_title FROM tblcategories WHERE category_id = {$category_id}";
-                    $category_result = mysqli_query($connection, $category_query);
+                    $category_stmt = mysqli_prepare($connection, "SELECT category_title FROM tblcategories WHERE category_id = ?");
 
-                    checkQuery($category_result);
+                    checkPreparedStatement($category_stmt);
 
-                    while($row = mysqli_fetch_assoc($category_result)) {
-                        $category = $row['category_title'];
-                    } ?>
+                    mysqli_stmt_bind_param($category_stmt, "i", $category_id);
+                    mysqli_stmt_execute($category_stmt);
+                    mysqli_stmt_bind_result($category_stmt, $category_title);
+
+                    while(mysqli_stmt_fetch($category_stmt)) {
+                        $category = $category_title;
+                    }
+
+                    ?>
 
                     <h1 class="page-header">
                         <?php
-                            if(mysqli_num_rows($category_result) != NULL) {
+
+                            if(mysqli_stmt_num_rows($category_stmt) > 0) {
                                 echo $category;
                             } else {
                                 echo "Category not found.";
@@ -41,13 +47,18 @@
                     <?php
 
                     $posts_info = array();
-                    
-                    $query = "SELECT * FROM tblposts JOIN tblusers ON tblusers.user_id = tblposts.post_author WHERE category_id = {$category_id} AND post_status = 'Published' ORDER BY post_id DESC";
-                    $result = mysqli_query($connection, $query);
 
-                    checkQuery($result);
-                    
-                    while($row = mysqli_fetch_assoc($result)) {
+                    $post_status = "Published";
+
+                    $posts_stmt = mysqli_prepare($connection, "SELECT * FROM tblposts JOIN tblusers ON tblusers.user_id = tblposts.post_author WHERE category_id = ? AND post_status = ? ORDER BY post_id DESC");
+
+                    checkPreparedStatement($posts_stmt);
+
+                    mysqli_stmt_bind_param($posts_stmt, "is", $category_id, $post_status);
+                    mysqli_stmt_execute($posts_stmt);
+                    $result = mysqli_stmt_get_result($posts_stmt);
+
+                    while($row = mysqli_fetch_array($result)) {
 
                         $posts_info['post_id'] = $row['post_id'];
                         $posts_info['post_title'] = $row['post_title'];

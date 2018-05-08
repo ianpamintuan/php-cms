@@ -5,10 +5,13 @@
         $post_id = clean($_GET['edit']);
         $post_info = array();
 
-        $query = "SELECT * FROM tblposts WHERE post_id={$post_id}";
-        $result = mysqli_query($connection, $query);
+        $post_stmt = mysqli_prepare($connection, "SELECT * FROM tblposts WHERE post_id = ?");
 
-        checkQuery($result);
+        checkPreparedStatement($post_stmt);
+
+        mysqli_stmt_bind_param($post_stmt, "i", $post_id);
+        mysqli_stmt_execute($post_stmt);
+        $result = mysqli_stmt_get_result($post_stmt);
 
         if(!is_numeric($post_id) || mysqli_num_rows($result) == NULL) {
             header("Location: posts.php");
@@ -50,31 +53,25 @@
 
         if(empty($post_info['image'])) {
 
-            $image_query = "SELECT * FROM tblposts WHERE post_id = {$post_info['id']}";
-            $image_result = mysqli_query($connection, $image_query);
+            $image_stmt = mysqli_prepare($connection, "SELECT * FROM tblposts WHERE post_id = ?");
 
-            checkQuery($image_result);
+            checkPreparedStatement($image_stmt);
+
+            mysqli_stmt_bind_param($image_stmt, "i", $post_info['id']);
+            mysqli_stmt_execute($image_stmt);
+            $image_result = mysqli_stmt_get_result($image_stmt);
 
             $row = mysqli_fetch_array($image_result);
-            $post_info['image'] = $row['post_image']; 
-        
+            $post_info['image'] = $row['post_image'];
+
         }
 
-        foreach($post_info as $key => $value) {
-            $post_info[$key] = clean($value);
-        }
+        $post_update_stmt = mysqli_prepare($connection, "UPDATE tblposts SET post_title = ?, post_author = ?, post_image = ?, post_content = ?, post_tags = ?, post_status = ?, category_id = ? WHERE post_id = ?");
 
-        $query = "UPDATE tblposts SET post_title = '" . $post_info['title'] . "', post_author = '" . $post_info['author'] . "', category_id = " . $post_info['category_id'] . ", post_content = '" . $post_info['content'] . "', post_status = '" . $post_info['status'] . "', post_tags = '" . $post_info['status'] . "', post_image = '" . $post_info['image'] . "' WHERE post_id = " . $post_info['id'];
-        $result = mysqli_query($connection, $query);
+        checkPreparedStatement($post_update_stmt);
 
-        checkQuery($result);
-
-        $post_info['title'] = $_POST['post_title'];
-        $post_info['author'] = $_POST['post_author'];
-        $post_info['content'] = $_POST['post_content'];
-        $post_info['category_id'] = $_POST['category_id'];
-        $post_info['status'] = $_POST['post_status'];
-        $post_info['tags'] = $_POST['post_tags'];
+        mysqli_stmt_bind_param($post_update_stmt, "ssssssii", $post_info['title'], $post_info['author'], $post_info['image'], $post_info['content'], $post_info['tags'], $post_info['status'], $post_info['category_id'], $post_info['id']);
+        mysqli_stmt_execute($post_update_stmt);
 
         echo "<div class='alert alert-success alert-dismissible' role='alert'>
         <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>

@@ -7,10 +7,12 @@
 
         $id = clean($_POST['post_id']);
 
-        $query = "DELETE FROM tblposts WHERE post_id = $id";
-        $result = mysqli_query($connection, $query);
+        $post_stmt = mysqli_prepare($connection, "DELETE FROM tblposts WHERE post_id = ?");
 
-        checkQuery($result);
+        checkPreparedStatement($post_stmt);
+
+        mysqli_stmt_bind_param($post_stmt, "i", $id);
+        mysqli_stmt_execute($post_stmt);
 
     }
 

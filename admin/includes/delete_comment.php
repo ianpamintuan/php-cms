@@ -7,10 +7,12 @@
 
         $id = clean($_POST['comment_id']);
 
-        $query = "DELETE FROM tblcomments WHERE comment_id = $id";
-        $result = mysqli_query($connection, $query);
+        $comment_stmt = mysqli_prepare($connection, "DELETE FROM tblcomments WHERE comment_id = ?");
 
-        checkQuery($result);
+        checkPreparedStatement($comment_stmt);
+
+        mysqli_stmt_bind_param($comment_stmt, "i", $id);
+        mysqli_stmt_execute($comment_stmt);
 
     }
 

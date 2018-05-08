@@ -8,10 +8,13 @@
 
         $user_id = $_SESSION['user_id'];
 
-        $query = "SELECT * FROM tblusers WHERE user_id = {$user_id}";
-        $result = mysqli_query($connection, $query);
+        $profile_stmt = mysqli_prepare($connection, "SELECT * FROM tblusers WHERE user_id = ?");
 
-        checkQuery($result);
+        checkPreparedStatement($profile_stmt);
+
+        mysqli_stmt_bind_param($profile_stmt, "i", $user_id);
+        mysqli_stmt_execute($profile_stmt);
+        $result = mysqli_stmt_get_result($profile_stmt);
 
         while($row = mysqli_fetch_array($result)) {
 
@@ -48,21 +51,22 @@
                         
                         if(isset($_POST['update_profile'])) {
 
-                            $user_firstname = clean($_POST['user_firstname']);
-                            $user_lastname = clean($_POST['user_lastname']);
-                            $user_role = clean($_POST['roles']);
-                            $user_email = clean($_POST['user_email']);
-                            $user_username = clean($_POST['user_username']);
-                            $user_password = clean($_POST['user_password']);
+                            $user_firstname = $_POST['user_firstname'];
+                            $user_lastname = $_POST['user_lastname'];
+                            $user_role = $_POST['roles'];
+                            $user_email = $_POST['user_email'];
+                            $user_username = $_POST['user_username'];
+                            $user_password = $_POST['user_password'];
                             
                             $hashed_password = password_hash($user_password, PASSWORD_DEFAULT);
-                    
-                            $query = "UPDATE tblusers SET firstname = '{$user_firstname}', lastname = '{$user_lastname}', user_role = '{$user_role}', email = '{$user_email}', username = '{$user_username}', password = '{$hashed_password}' ";
-                            $query .= "WHERE user_id = $user_id";                   
-                            $result = mysqli_query($connection, $query);
 
-                            checkQuery($result);
+                            $profile_update_stmt = mysqli_prepare($connection, "UPDATE tblusers SET firstname = ?, lastname = ?, user_role = ?, email = ?, username = ?, password = ? WHERE user_id = ?");
                     
+                            checkPreparedStatement($profile_update_stmt);
+
+                            mysqli_stmt_bind_param($profile_update_stmt, "ssssssi", $user_firstname, $user_lastname, $user_role, $user_email, $user_username, $hashed_password, $user_id);
+                            mysqli_stmt_execute($profile_update_stmt);
+
                             echo "<div class='alert alert-success alert-dismissible' role='alert'>
                             <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
                             Profile updated successfully.</div>";

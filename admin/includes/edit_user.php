@@ -6,11 +6,14 @@
 
         $user_id = clean($_GET['user_id']);
         $user_info = array();
-        
-        $query = "SELECT * FROM tblusers WHERE user_id = {$user_id}";
-        $result = mysqli_query($connection, $query);
 
-        checkQuery($result);
+        $user_stmt = mysqli_prepare($connection, "SELECT * FROM tblusers WHERE user_id = ?");
+
+        checkPreparedStatement($user_stmt);
+
+        mysqli_stmt_bind_param($user_stmt, "i", $user_id);
+        mysqli_stmt_execute($user_stmt);
+        $result = mysqli_stmt_get_result($user_stmt);
 
         if(!is_numeric($user_id) || mysqli_num_rows($result) == NULL) {
             header("Location: users.php");
@@ -44,24 +47,14 @@
         $user_info['username'] = $_POST['user_username'];
         $user_info['password'] = $_POST['user_password'];
 
-        foreach($user_info as $key => $value) {
-            $user_info[$key] = clean($value);
-        }
-
         $hashed_password = password_hash($user_info['password'], PASSWORD_DEFAULT);
 
-        $query = "UPDATE tblusers SET firstname = '" . $user_info['first_name'] . "', lastname = '" . $user_info['last_name'] . "', user_role = '" . $user_info['user_role'] . "', email = '" . $user_info['email'] . "', username = '" . $user_info['username'] . "', password = '{$hashed_password}' ";
-        $query .= "WHERE user_id = $user_id";
-        $result = mysqli_query($connection, $query);
+        $user_update_stmt = mysqli_prepare($connection, "UPDATE tblusers SET firstname = ?, lastname = ?, user_role = ?, email = ?, username = ?, password = ? WHERE user_id = ?");
+                    
+        checkPreparedStatement($user_update_stmt);
 
-        checkQuery($result);
-
-        $user_info['first_name'] = $_POST['user_firstname'];
-        $user_info['last_name'] = $_POST['user_lastname'];
-        $user_info['user_role'] = $_POST['roles'];
-        $user_info['email'] = $_POST['user_email'];
-        $user_info['username'] = $_POST['user_username'];
-        $user_info['password'] = $_POST['user_password'];
+        mysqli_stmt_bind_param($user_update_stmt, "ssssssi", $user_info['first_name'], $user_info['last_name'], $user_info['user_role'], $user_info['email'], $user_info['username'], $hashed_password, $user_id);
+        mysqli_stmt_execute($user_update_stmt);
 
         echo "<div class='alert alert-success alert-dismissible' role='alert'>
         <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>

@@ -15,48 +15,34 @@
                     switch($bulk_options) {
     
                         case 'Clone':
-                        $clone_query = "INSERT INTO tblposts(post_title, post_author, category_id, post_date, post_image, post_content, post_tags, post_status) ";
-                        $clone_query .= "SELECT post_title, post_author, category_id, post_date, post_image, post_content, post_tags, post_status FROM tblposts WHERE post_id = {$checkbox}" ;
-                        $clone_result = mysqli_query($connection, $clone_query);
-
-                        if(!$clone_result) {
-                            die("SQL Error " . mysqli_error($connection));
-                        } else {
-
-                        }
-
+                        $query_stmt = mysqli_prepare($connection, "INSERT INTO tblposts(post_title, post_author, category_id, post_date, post_image, post_content, post_tags, post_status) SELECT post_title, post_author, category_id, post_date, post_image, post_content, post_tags, post_status FROM tblposts WHERE post_id = ?");
+                        mysqli_stmt_bind_param($query_stmt, "i", $checkbox);
                         break;
 
                         case 'Published':
-                        $query = "UPDATE tblposts SET post_status = '{$bulk_options}' WHERE post_id = {$checkbox}";
+                        $query_stmt = mysqli_prepare($connection, "UPDATE tblposts SET post_status = ? WHERE post_id = ?");
+                        mysqli_stmt_bind_param($query_stmt, "si", $bulk_options, $checkbox);
                         break;
     
                         case 'Draft':
-                        $query = "UPDATE tblposts SET post_status = '{$bulk_options}' WHERE post_id = {$checkbox}";
+                        $query_stmt = mysqli_prepare($connection, "UPDATE tblposts SET post_status = ? WHERE post_id = ?");
+                        mysqli_stmt_bind_param($query_stmt, "si", $bulk_options, $checkbox);
                         break;
 
                         case 'Delete':
-                        $query = "DELETE FROM tblposts WHERE post_id = {$checkbox}";
+                        $query_stmt = mysqli_prepare($connection, "DELETE FROM tblposts WHERE post_id = ?");
+                        mysqli_stmt_bind_param($query_stmt, "i", $checkbox);
                         break;
     
                     }
-                   
-                    if(isset($query)) {
 
-                        $result = mysqli_query($connection, $query);
+                    checkPreparedStatement($query_stmt);
 
-                        if(!$result) {
-                            echo "SQL Error. " . mysqli_error($connection);
-                        }
-
-                    }
+                    mysqli_stmt_execute($query_stmt);
 
                 }
 
-                echo "<div class='alert alert-success alert-dismissible' role='alert'>
-                <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
-                Successful in updating posts.</div>";
-                
+                header("Location: posts.php");
 
             } else {
 

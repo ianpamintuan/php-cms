@@ -20,11 +20,16 @@
                     }
 
                     $posts_info = array();
-                    
-                    $query = "SELECT * FROM tblposts JOIN tblusers ON tblusers.user_id = tblposts.post_author WHERE BINARY username = '{$post_author}' AND post_status = 'Published' ORDER BY post_id DESC";
-                    $result = mysqli_query($connection, $query);
 
-                    checkQuery($result);
+                    $post_status = "Published";
+
+                    $post_stmt = mysqli_prepare($connection, "SELECT * FROM tblposts JOIN tblusers ON tblusers.user_id = tblposts.post_author WHERE BINARY username = ? AND post_status = ? ORDER BY post_id DESC");
+                    
+                    checkPreparedStatement($post_stmt);
+
+                    mysqli_stmt_bind_param($post_stmt, "ss", $post_author, $post_status);
+                    mysqli_stmt_execute($post_stmt);
+                    $result = mysqli_stmt_get_result($post_stmt);
                     
                     ?>
 

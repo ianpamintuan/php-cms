@@ -18,12 +18,17 @@
 
                     if(isset($_GET['search']) ) {
     
-                        $search = clean($_GET['search']);
-    
-                        $query = "SELECT * FROM tblposts JOIN tblusers ON tblusers.user_id = tblposts.post_author WHERE post_tags LIKE '%$search%' AND post_status = 'Published' ORDER BY post_id DESC";
-                        $result = mysqli_query($connection, $query);
+                        $search = "%" . clean($_GET['search']) . "%";
 
-                        checkQuery($result);
+                        $post_status = "Published";
+
+                        $search_stmt = mysqli_prepare($connection, "SELECT * FROM tblposts JOIN tblusers ON tblusers.user_id = tblposts.post_author WHERE post_tags LIKE ? AND post_status = ? ORDER BY post_id DESC");
+
+                        checkPreparedStatement($search_stmt);
+
+                        mysqli_stmt_bind_param($search_stmt, "ss", $search, $post_status);
+                        mysqli_stmt_execute($search_stmt);
+                        $result = mysqli_stmt_get_result($search_stmt);
                                 
                         $count = mysqli_num_rows($result);
 

@@ -28,7 +28,7 @@
 
                     if($post_id == NULL || !is_numeric($post_id) || mysqli_num_rows($result) == NULL) {
 
-                        header("Location: index.php");
+                        header("Location: /php-cms/");
                         exit();
 
                     }
@@ -49,7 +49,7 @@
                     <a href="/php-cms/post/<?php echo $posts_info['post_id']; ?>"><?php echo $posts_info['post_title']; ?></a>
                     <?php
                         if(isset($_SESSION['user_id'])) { ?>
-                            <a href="admin/posts.php?src=edit_post&edit=<?php echo $posts_info['post_id']; ?>" class="pull-right" style="font-size: 16px;">Edit post</a>
+                            <a href="/php-cms/admin/posts.php?src=edit_post&edit=<?php echo $posts_info['post_id']; ?>" class="pull-right" style="font-size: 16px;">Edit post</a>
                     <?php                            
                         }
                     ?>

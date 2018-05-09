@@ -231,7 +231,7 @@
             echo "<tr>";
             echo "<td><input type='checkbox' name='checkboxArray[]' class='checkbox' value='{$post_id}'></td>";
             echo "<td>{$post_id}</td>";
-            echo "<td><a href='../post.php?post_id={$post_id}'>{$post_title}</a></td>";
+            echo "<td><a href='../post/{$post_id}'>{$post_title}</a></td>";
             echo "<td>{$post_content}</td>";
             echo "<td>{$post_author}</td>";
             echo "<td>{$category_title}</td>";
@@ -333,7 +333,7 @@
             $comment_post_id = $post['post_id'];
             $post_title = $post['post_title'];
 
-            echo "<td><a href='../post.php?post_id=" . $comment_post_id . "'>{$post_title}</a></td>";
+            echo "<td><a href='../post/" . $comment_post_id . "'>{$post_title}</a></td>";
 
             if(isset($_GET['post_id'])) {
 

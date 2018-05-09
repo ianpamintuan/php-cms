@@ -1,0 +1,6 @@
+{
+    "name": "markian/php-cms",
+    "require": {
+        "phpmailer/phpmailer": "^6.0"
+    }
+}

@@ -20,7 +20,9 @@
 
                         $pages = array(
                             'Registration' => 'registration',
-                            'Contact' => 'contact'
+                            'Contact' => 'contact',
+                            'Admin' => 'admin/',
+                            'Login' => 'login.php'
                         );
 
                         $class = "";
@@ -30,7 +32,11 @@
                         foreach($pages as $page => $url) {
 
                             if(isset($_SESSION['user_role'])) {
-                                if($page == 'Registration') {
+                                if($page == 'Registration' || $page == 'Login') {
+                                    continue;
+                                }
+                            } else {
+                                if($page == 'Admin') {
                                     continue;
                                 }
                             }
@@ -45,7 +51,7 @@
 
                     ?>
                     
-                    <li><a href="/php-cms/admin">Admin</a></li>
+                    <!-- <li><a href="/php-cms/admin">Admin</a></li> -->
                 </ul>
             </div>
             <!-- /.navbar-collapse -->

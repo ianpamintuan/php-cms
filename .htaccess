@@ -1,5 +1,5 @@
 RewriteEngine on
-RewriteRule ^(index|contact|registration)$ $1.php [NC,L]
+RewriteRule ^(index|contact|registration|login)$ $1.php [NC,L]
 RewriteRule ^post/(\d+)$ post.php?post_id=$1 [NC,L]
 RewriteRule ^category/(\d+)$ category.php?category=$1 [NC,L]
 RewriteRule ^author/(\w+)$ author_posts.php?post_author=$1 [NC,L]

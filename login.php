@@ -2,7 +2,7 @@
 
 <!-- Navigation -->
 
-<?php  include "includes/nav.php"; ?>
+<?php require_once('includes/nav.php'); ?>
 
 <?php
 
@@ -31,11 +31,9 @@
 					<div class="panel-body">
 						<div class="text-center">
 
-
 							<h3><i class="fa fa-user fa-4x"></i></h3>
 							<h2 class="text-center">Login</h2>
 							<div class="panel-body">
-
 
 								<form id="login-form" role="form" autocomplete="off" class="form" method="post">
 
@@ -54,11 +52,14 @@
 										</div>
 									</div>
 
+                                    <div class="form-group">
+                                        <a href="/php-cms/forgot.php?token=<?php echo uniqid(true); ?>">Forgot Password</a>
+                                    </div>
+
 									<div class="form-group">
 
 										<input name="login" class="btn btn-lg btn-primary btn-block" value="Login" type="submit">
 									</div>
-
 
 								</form>
 
@@ -73,7 +74,7 @@
 
 	<hr>
 
-	<?php include "includes/footer.php";?>
+	<?php require_once('includes/footer.php');?>
 
 </div> <!-- /.container -->
 

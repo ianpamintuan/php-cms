@@ -22,7 +22,7 @@
                             'Registration' => 'registration',
                             'Contact' => 'contact',
                             'Admin' => 'admin/',
-                            'Login' => 'login.php'
+                            'Login' => 'login'
                         );
 
                         $class = "";

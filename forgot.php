@@ -1,5 +1,8 @@
-<?php require_once('includes/db.php'); ?>
 <?php require_once('includes/header.php'); ?>
+
+<!-- Navigation -->
+
+<?php require_once('includes/nav.php'); ?>
 
 <?php
 
@@ -8,6 +11,13 @@
         header("Location: /php-cms/login");
         exit();
     
+    }
+
+    if(isset($_SESSION['user_role'])) {
+
+        header("Location: /php-cms/");
+        exit();
+
     }
 
     if(isMethod("post")) {

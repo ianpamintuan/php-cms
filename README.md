@@ -25,6 +25,12 @@ composer install
 * WYSISYG editor using [tinymce](https://www.tinymce.com/)
 * Pretty URL using .htaccess
 
+## Admin Credentials
+```
+username: admin
+password: admin
+```
+
 ## Author
 
 Mark Ian Pamintuan

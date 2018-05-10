@@ -1,12 +1,15 @@
 # PHP CMS
 A simple CMS built using plain PHP
 
-## Getting Started
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
-
 ## Prerequisites
 * [XAMPP](https://www.apachefriends.org) - Web Server
 * [MySQL](https://www.mysql.com/) - Database
+* [Composer](https://getcomposer.org/) - Package Manager
+
+## Install dependencies
+```
+composer install
+```
 
 ## Features
 

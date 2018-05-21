@@ -16,7 +16,15 @@
 
                 <?php
 
-                    $posts_per_page = 2;
+                    $posts_per_page = 5;
+
+                    $query = "SELECT posts_per_page FROM tblsettings";
+                    $stmt = mysqli_prepare($connection, $query);
+                    checkPreparedStatement($stmt);
+                    mysqli_stmt_execute($stmt);
+                    mysqli_stmt_bind_result($stmt, $posts_per_page);
+                    mysqli_stmt_fetch($stmt);
+                    mysqli_stmt_close($stmt);
 
                     if(isset($_GET['page'])) {
 

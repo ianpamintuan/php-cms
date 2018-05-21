@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 10, 2018 at 05:07 PM
+-- Generation Time: May 21, 2018 at 05:18 PM
 -- Server version: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -113,8 +113,25 @@ CREATE TABLE `tblsessions` (
 --
 
 INSERT INTO `tblsessions` (`id`, `session`, `time`) VALUES
-(158, 'm1550rani278skmekd4b3acg73', 1525964811),
+(158, 'm1550rani278skmekd4b3acg73', 1526915882),
 (159, 'tilaerqmu7jd643koakgogbce6', 1525789077);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tblsettings`
+--
+
+CREATE TABLE `tblsettings` (
+  `posts_per_page` tinyint(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tblsettings`
+--
+
+INSERT INTO `tblsettings` (`posts_per_page`) VALUES
+(5);
 
 -- --------------------------------------------------------
 
@@ -197,17 +214,17 @@ ALTER TABLE `tblusers`
 -- AUTO_INCREMENT for table `tblcategories`
 --
 ALTER TABLE `tblcategories`
-  MODIFY `category_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `category_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `tblcomments`
 --
 ALTER TABLE `tblcomments`
-  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `tblposts`
 --
 ALTER TABLE `tblposts`
-  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT for table `tblsessions`
 --
@@ -217,7 +234,7 @@ ALTER TABLE `tblsessions`
 -- AUTO_INCREMENT for table `tblusers`
 --
 ALTER TABLE `tblusers`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

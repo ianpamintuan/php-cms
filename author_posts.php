@@ -19,15 +19,57 @@
                         exit();
                     }
 
+                    $posts_per_page = 5;
+
+                    $query = "SELECT posts_per_page FROM tblsettings";
+                    $stmt = mysqli_prepare($connection, $query);
+                    checkPreparedStatement($stmt);
+                    mysqli_stmt_execute($stmt);
+                    mysqli_stmt_bind_result($stmt, $posts_per_page);
+                    mysqli_stmt_fetch($stmt);
+                    mysqli_stmt_close($stmt);
+
+                    if(isset($_GET['page'])) {
+
+                        $page = clean($_GET['page']);
+
+                    } else {
+
+                        $page = "";
+
+                    }
+
+                    if($page === "" || $page === 1) {
+
+                        $offset = 0;
+
+                    } else {
+
+                        $offset = ($page * $posts_per_page) - $posts_per_page;
+
+                    }
+
                     $posts_info = array();
 
                     $post_status = "Published";
 
-                    $post_stmt = mysqli_prepare($connection, "SELECT * FROM tblposts JOIN tblusers ON tblusers.user_id = tblposts.post_author WHERE BINARY username = ? AND post_status = ? ORDER BY post_id DESC");
+                    $posts_count_stmt = mysqli_prepare($connection, "SELECT * FROM tblposts JOIN tblusers ON tblusers.user_id = tblposts.post_author WHERE BINARY username = ? AND post_status = ?");
+                    
+                    mysqli_stmt_bind_param($posts_count_stmt, "ss", $post_author, $post_status);
+                    mysqli_stmt_execute($posts_count_stmt);
+                    $posts_count_result = mysqli_stmt_get_result($posts_count_stmt);
+
+                    checkPreparedStatement($posts_count_stmt);
+
+                    $posts_count = mysqli_num_rows($posts_count_result);
+
+                    $pagination = ceil($posts_count / $posts_per_page);
+
+                    $post_stmt = mysqli_prepare($connection, "SELECT * FROM tblposts JOIN tblusers ON tblusers.user_id = tblposts.post_author WHERE BINARY username = ? AND post_status = ? ORDER BY post_id DESC LIMIT ?, ?");
                     
                     checkPreparedStatement($post_stmt);
 
-                    mysqli_stmt_bind_param($post_stmt, "ss", $post_author, $post_status);
+                    mysqli_stmt_bind_param($post_stmt, "ssii", $post_author, $post_status, $offset, $posts_per_page);
                     mysqli_stmt_execute($post_stmt);
                     $result = mysqli_stmt_get_result($post_stmt);
                     
@@ -78,6 +120,26 @@
                 <hr>
 
                 <?php   }   ?>
+
+                <ul class="pager">
+
+                <?php
+
+                    for($i = 1; $i <= $pagination; $i++) {
+
+                        if($i == 1 && $page == "") {
+                            echo "<li><a class='active' href='/php-cms/author/{$post_author}/{$i}'>{$i}</a></li>";
+                        } elseif($i == $page) {
+                            echo "<li><a class='active' href='/php-cms/author/{$post_author}/{$i}'>{$i}</a></li>";
+                        } else {
+                            echo "<li><a href='/php-cms/author/{$post_author}/{$i}'>{$i}</a></li>";
+                        }
+                        
+                    }
+
+                ?>
+
+                </ul>
                 
                 <!-- Pager -->
                 <ul class="pager">

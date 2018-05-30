@@ -7,6 +7,16 @@
         
     }
 
+    function imagePlaceholder($image) {
+        
+        if(!$image) {
+            return 'https://imgplaceholder.com/420x320/ff7f7f/333333/fa-image';
+        } else {
+            return '/php-cms/images/' . $image;
+        }
+
+    }
+
     function checkPreparedStatement($stmt) {
 
         global $connection;

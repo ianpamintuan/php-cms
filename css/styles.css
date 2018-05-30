@@ -2,3 +2,7 @@
     background-color: #286090;
     color: #fff;
 }
+
+.img-responsive {
+    width: 100%;
+}

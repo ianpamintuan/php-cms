@@ -102,7 +102,7 @@
                             </p>
                             <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo $posts_info['post_date']; ?></p>
                             <hr>
-                            <img class="img-responsive" src="/php-cms/images/<?php echo $posts_info['post_image']; ?>" alt="">
+                            <img class="img-responsive" src="<?php echo imagePlaceholder($posts_info['post_image']); ?>" alt="">
                             <hr>
                             <p><?php echo $posts_info['post_content']; ?></p>
                             <a class="btn btn-primary" href="/php-cms/post/<?php echo $posts_info['post_id']; ?>">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>

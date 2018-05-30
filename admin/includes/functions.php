@@ -7,16 +7,6 @@
         
     }
 
-    function checkQuery($result) {
-
-        global $connection;
-
-        if(!$result) {
-            die('SQL Error ' . mysqli_error($connection));
-        }
-
-    }
-
     function checkPreparedStatement($stmt) {
 
         global $connection;
@@ -189,8 +179,18 @@
         
         global $connection;
 
-        $posts_stmt = mysqli_prepare($connection, "SELECT * FROM tblposts JOIN tblusers ON tblusers.user_id = tblposts.post_author JOIN tblcategories ON tblcategories.category_id = tblposts.category_id ORDER BY post_id DESC");
-        
+        if(isset($_SESSION['user_role'])) {
+            
+            if($_SESSION['user_role'] == 'Admin') {
+                $posts_stmt = mysqli_prepare($connection, "SELECT * FROM tblposts JOIN tblusers ON tblusers.user_id = tblposts.post_author JOIN tblcategories ON tblcategories.category_id = tblposts.category_id ORDER BY post_id DESC");
+                echo "admin";
+            } else {
+                $posts_stmt = mysqli_prepare($connection, "SELECT * FROM tblposts JOIN tblusers ON tblusers.user_id = tblposts.post_author JOIN tblcategories ON tblcategories.category_id = tblposts.category_id WHERE post_author = ? ORDER BY post_id DESC");
+                mysqli_stmt_bind_param($posts_stmt, "i", $_SESSION['user_id']);
+            }
+
+        }
+
         checkPreparedStatement($posts_stmt);
 
         mysqli_stmt_execute($posts_stmt);
